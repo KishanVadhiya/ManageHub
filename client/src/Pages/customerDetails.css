@@ -1,0 +1,118 @@
+.container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+  
+  #customerInfo {
+    background-color: #f5f5f5;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+  }
+  
+  #customerInfo h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+  
+  #customerInfo p {
+    font-size: 1rem;
+    margin: 5px 0;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  
+  table th, table td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+  }
+  
+  table th {
+    background-color: #f0f0f0;
+  }
+  
+  button {
+    padding: 10px 15px;
+    margin: 10px 5px;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #45a049;
+  }
+  
+  #transactionForm {
+    margin-top: 20px;
+    width:60%;
+    margin-left: 20%;
+  }
+  
+  #transactionForm input, #transactionForm select {
+    width: 50%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+  }
+  
+  #transactionForm button {
+    background-color: #007bff;
+  }
+  
+  #transactionForm button:last-of-type {
+    background-color: #ff0000;
+  }
+  
+  #transactionForm button:hover {
+    opacity: 0.9;
+  }
+  
+  .search-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .search-container input {
+    width: 70%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+  }
+  
+  .search-container select {
+    width: 25%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+  }
+  
+  .action-buttons {
+    display: flex;
+    justify-content: flex-start;
+  }
+  
+  .action-buttons button {
+    background-color: #28a745;
+    margin-right: 10px;
+  }
+  
+  .action-buttons button:last-of-type {
+    background-color: #007bff;
+  }
+  
