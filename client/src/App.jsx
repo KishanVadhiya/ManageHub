@@ -1,52 +1,57 @@
 // import Home from './Pages/Home'
-// import CustomerDetails from "./Pages/customerDetails"
-// import Inventory from "./Pages/Inventory";
-// import About from "./Pages/about"
-// import Sidebar from "./Pages/Sidebar"
-// import Invoice from "./Pages/Invoice"
-// import CustomerManagement from './Pages/customerManage';
-// import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import CustomerDetails from "./Pages/customerDetails"
+import Inventory from "./Pages/Inventory";
+import About from "./Pages/about"
+import Sidebar from "./Pages/Sidebar"
+import Invoice from "./Pages/Invoice"
+import CustomerManagement from './Pages/customerManage';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 // import login from './components/auth/LoginPage';
-// import Profile from './Pages/Profile'
+import LoginPage from './components/auth/LoginPage';
+import Profile from './Pages/Profile'
+import SignUpPage from "./components/auth/SignUpPage";
 // import CreateBusinessAccount from "./Pages/createBusinessAccount";
 // import AllAccounts from "./Pages/AllAccount";
 
-// const isLoggedIn = ()=>{
-//   const token = localStorage.getItem('token');
-//   if(token){
-//     return true;
-  // }
-//   return false;
-// }
-// const App = () => {
-//   return (
-//        <Router>
-//      <div >
+const isLoggedIn = ()=>{
+  const token = localStorage.getItem('token');
+  if(token){
+    return true;
+  }
+  return false;
+}
+const App = () => {
+  return (
+       <Router>
+     <div >
        
-//       {/* <Invoice/> */}
-//       {isLoggedIn()&&<Sidebar/>}
-//          <Routes>
+      {/* <Invoice/> */}
+      {isLoggedIn()&&<Sidebar/>}
+         <Routes>
           {/* <Route path="/" element={<Account />} /> */}
           {/* <Route path="/Account" element={<Account />} /> */}
-{/*     
+     
             <Route path="/" element={isLoggedIn() ?<CustomerManagement />: <Navigate to='/signin' />} />
             <Route path="/customer-management" element={isLoggedIn() ?<CustomerManagement />:<Navigate to='/signin' />}  />
             <Route path="/customer-details" element={isLoggedIn() ?<CustomerDetails />:<Navigate to='/signin' />} />
             <Route path="/inventory" element={isLoggedIn() ?<Inventory />:<Navigate to='/signin' />} />
             <Route path="/about" element={isLoggedIn() ?<About />:<Navigate to='/signin' />} />
             <Route path="/Invoice" element={isLoggedIn() ?<Invoice />:<Navigate to='/signin' />} />
-            <Route path="/profile" element={isLoggedIn() ?<Profile />:<Navigate to='/signin' />} /> */}
+            <Route path="/profile" element={isLoggedIn() ?<Profile />:<Navigate to='/signin' />} /> 
+            <Route path="/signin" element={<LoginPage />} />
+            {/* <Route path="/signup"  */}
+            <Route path="/signup" element={<SignUpPage />} />
           
              {/* <Route path="/contact" element={<Contact />}/> */}
              {/* <Route path="/" element={<Home />} />  */}
-//           </Routes>
-//    </div>
-//     </Router>
-//    );
-// };
+          </Routes>
+   </div>
+    </Router>
+   );
+};
             
          
-// export default App;
+export default App;
 
 
 
@@ -56,24 +61,24 @@
 // import LoginPage from './components/auth/LoginPage';
 // import SignUpPage from './components/auth/SignUpPage';
 // import SignUpPage from './components/auth/SignUpPage';
-import Contact from "./Pages/Contact"
+// import Contact from "./Pages/Contact"
 
-const App = () => {
-    return (
-        // <Router>
-        //     <Routes>
-        //         <Route path="/login" element={<LoginPage />} />
-        //         <Route path="/signup" element={<SignUpPage />} />
-        //         {/* Add other routes like Home or Dashboard */}
-        //     </Routes>
-        // </Router>
-        // <LoginPage/>
-        // <SignUpPage/>
-        <Contact/>
-    );
-};
+// const App = () => {
+//     return (
+//         // <Router>
+//         //     <Routes>
+//         //         <Route path="/login" element={<LoginPage />} />
+//         //         <Route path="/signup" element={<SignUpPage />} />
+//         //         {/* Add other routes like Home or Dashboard */}
+//         //     </Routes>
+//         // </Router>
+//         // <LoginPage/>
+//         // <SignUpPage/>
+//         <Contact/>
+//     );
+// };
 
-export default App;
+// export default App;
 
 
 

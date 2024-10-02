@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './Inventory.module.css'; // Import CSS module
 import { FaEdit, FaTrash } from "react-icons/fa";
 
-const App = () => {
+const Inventory = () => {
   const [items, setItems] = useState([]);
   const [formVisible, setFormVisible] = useState(false);
   const [formData, setFormData] = useState({
@@ -15,7 +15,30 @@ const App = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterOption, setFilterOption] = useState('none');
   const [editingItem, setEditingItem] = useState(null); // State for editing an item
+  const token = localStorage.getItem('token'); // Assuming token is stored in localStorage
 
+  // Fetch all products when component mounts
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  // Fetch products from the backend API
+  const fetchProducts = async () => {
+    try {
+      const response = await fetch('http://localhost:3000/api/inventory', {
+        method: 'GET',
+        headers: {
+          'Authorization': `${token}`
+        }
+      });
+      const data = await response.json();
+      setItems(data);
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    }
+  };
+
+  // Handle input changes in the form
   const handleInputChange = (e) => {
     const { id, value } = e.target;
     setFormData({
@@ -24,27 +47,46 @@ const App = () => {
     });
   };
 
-  const addItem = () => {
+  // Add or update product
+  const saveProduct = async () => {
     const { name, description, sold, qty, price } = formData;
-    if (name && description && sold && qty && price) {
-      // Calculate the next item number
-      const nextItemNumber = items.length > 0 ? Math.max(...items.map(item => item.number)) + 1 : 1;
 
-      const newItem = {
-        number: nextItemNumber,
-        name,
-        description,
-        sold,
-        qty,
-        price
-      };
-      setItems([...items, newItem]);
-      resetForm();
+    if (name && description && qty && price) {
+      try {
+        const method = editingItem ? 'PUT' : 'POST';
+        const endpoint = editingItem ? `http://localhost:3000/api/inventory/${editingItem._id}` : 'http://localhost:3000/api/inventory';
+        const response = await fetch(endpoint, {
+          method,
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `${token}`
+          },
+          body: JSON.stringify({
+            name,
+            description,
+            price: parseFloat(price),
+            stockQuantity: parseInt(qty),
+            itemsSold: parseInt(sold || 0)
+          })
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+          fetchProducts(); // Refresh product list
+          resetForm();
+        } else {
+          alert(result.message || 'Error saving product');
+        }
+      } catch (error) {
+        console.error('Error saving product:', error);
+      }
     } else {
       alert('Please fill out all fields.');
     }
   };
 
+  // Reset form after save or cancel
   const resetForm = () => {
     setFormData({
       name: '',
@@ -57,6 +99,41 @@ const App = () => {
     setFormVisible(false);
   };
 
+  // Handle editing an item
+  const handleEdit = (item) => {
+    setEditingItem(item);
+    setFormData({
+      name: item.name,
+      description: item.description,
+      sold: item.itemsSold,
+      qty: item.stockQuantity,
+      price: item.price
+    });
+    setFormVisible(true);
+  };
+
+  // Handle deleting an item
+  const handleDelete = async (itemId) => {
+    try {
+      const response = await fetch(`http://localhost:3000/api/inventory/${itemId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `${token}`
+        }
+      });
+
+      if (response.ok) {
+        fetchProducts(); // Refresh product list
+      } else {
+        const result = await response.json();
+        alert(result.message || 'Error deleting product');
+      }
+    } catch (error) {
+      console.error('Error deleting product:', error);
+    }
+  };
+
+  // Search and filter items
   const searchItems = () => {
     return items.filter((item) => item.name.toLowerCase().includes(searchTerm.toLowerCase()));
   };
@@ -64,9 +141,9 @@ const App = () => {
   const applyFilter = (filteredItems) => {
     let sortedItems = [...filteredItems];
     if (filterOption === 'sold') {
-      sortedItems = sortedItems.sort((a, b) => b.sold - a.sold);
+      sortedItems = sortedItems.sort((a, b) => b.itemsSold - a.itemsSold);
     } else if (filterOption === 'qty') {
-      sortedItems = sortedItems.sort((a, b) => b.qty - a.qty);
+      sortedItems = sortedItems.sort((a, b) => b.stockQuantity - a.stockQuantity);
     } else if (filterOption === 'price') {
       sortedItems = sortedItems.sort((a, b) => b.price - a.price);
     }
@@ -75,55 +152,14 @@ const App = () => {
 
   const displayItems = applyFilter(searchItems());
 
-  const handleEdit = (item) => {
-    setEditingItem(item);
-    setFormData({
-      name: item.name,
-      description: item.description,
-      sold: item.sold,
-      qty: item.qty,
-      price: item.price
-    });
-    setFormVisible(true);
-  };
-
-  const updateItem = () => {
-    const { name, description, sold, qty, price } = formData;
-    if (name && description && sold && qty && price) {
-      setItems((prevItems) =>
-        prevItems.map((item) =>
-          item.number === editingItem.number
-            ? { ...item, name, description, sold, qty, price }
-            : item
-        )
-      );
-      resetForm();
-    } else {
-      alert('Please fill out all fields.');
-    }
-  };
-
-  const handleDelete = (itemNumber) => {
-    const updatedItems = items.filter((item) => item.number !== itemNumber);
-    
-    // Reset item numbers after deletion
-    const resetItems = updatedItems.map((item, index) => ({
-      ...item,
-      number: index + 1 // Set new number based on index
-    }));
-
-    setItems(resetItems);
-    // console.log(Deleted item with number: ${itemNumber});
-  };
-
   return (
     <div className={styles.container}>
       <h1 style={{ textAlign: 'center' }}>INVENTORY</h1>
-      <header className={styles.header}> 
+      <header className={styles.header}>
         <input
           type="text"
           id="search"
-          className={styles.searchBar} 
+          className={styles.searchBar}
           placeholder="Search by product name"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
@@ -131,7 +167,7 @@ const App = () => {
 
         <select
           id="filter"
-          className={styles.filterDropdown} 
+          className={styles.filterDropdown}
           value={filterOption}
           onChange={(e) => setFilterOption(e.target.value)}
         >
@@ -174,7 +210,7 @@ const App = () => {
             placeholder="Items Sold"
             value={formData.sold}
             onChange={handleInputChange}
-            className={styles.formInput} 
+            className={styles.formInput}
           />
           <input
             type="number"
@@ -182,7 +218,7 @@ const App = () => {
             placeholder="Qty Available"
             value={formData.qty}
             onChange={handleInputChange}
-            className={styles.formInput} 
+            className={styles.formInput}
           />
           <input
             type="number"
@@ -190,16 +226,16 @@ const App = () => {
             placeholder="Unit Price"
             value={formData.price}
             onChange={handleInputChange}
-            className={styles.formInput} 
+            className={styles.formInput}
           />
-          <button onClick={editingItem ? updateItem : addItem} className={styles.addItemBtn}>
+          <button onClick={saveProduct} className={styles.addItemBtn}>
             {editingItem ? 'Update Item' : 'Add Item'}
-          </button> 
+          </button>
         </div>
       )}
 
       <table id="inventory-table" className={styles.inventoryTable}>
-        <thead className={styles.thead}>
+        <thead>
           <tr>
             <th>Item number</th>
             <th>Item name</th>
@@ -210,18 +246,18 @@ const App = () => {
             <th>Actions</th>
           </tr>
         </thead>
-        <tbody id="table-body" className={styles.tbody}>
+        <tbody id="table-body">
           {displayItems.map((item) => (
-            <tr key={item.number}>
-              <td>{item.number}</td>
+            <tr key={item._id}>
+              <td>{item._id}</td>
               <td>{item.name}</td>
               <td>{item.description}</td>
-              <td>{item.sold}</td>
-              <td>{item.qty}</td>
+              <td>{item.itemsSold}</td>
+              <td>{item.stockQuantity}</td>
               <td>{item.price}</td>
               <td>
-                <FaEdit style={{ color: 'blue', cursor: 'pointer' }} onClick={() => handleEdit(item)} /> 
-                <FaTrash style={{ color: 'red', cursor: 'pointer', marginLeft: '10px' }} onClick={() => handleDelete(item.number)} /> 
+                <FaEdit style={{ color: 'blue', cursor: 'pointer' }} onClick={() => handleEdit(item)} />
+                <FaTrash style={{ color: 'red', cursor: 'pointer', marginLeft: '10px' }} onClick={() => handleDelete(item._id)} />
               </td>
             </tr>
           ))}
@@ -231,4 +267,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default Inventory;
