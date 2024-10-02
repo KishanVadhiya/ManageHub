@@ -1,6 +1,6 @@
 import { useLocation } from 'react-router-dom';
 import { useState } from 'react';
-import './customerDetails.css';
+import styles from './customerDetails.module.css'; // Import the CSS module
 
 const CustomerDetails = () => {
   const location = useLocation();
@@ -11,11 +11,15 @@ const CustomerDetails = () => {
   const [formData, setFormData] = useState({
     transactionId: '',
     transactionDate: '',
-    transactionAmount: '',
     paymentType: '',
-    transactionStatus: ''
+    transactionStatus: '',
   });
 
+  const [products, setProducts] = useState([
+    { productName: '', price: '', quantity: '', discount: '' }
+  ]);
+
+  // Handle transaction form changes
   const handleInputChange = (e) => {
     setFormData({
       ...formData,
@@ -23,58 +27,88 @@ const CustomerDetails = () => {
     });
   };
 
+  // Handle product input change
+  const handleProductChange = (index, e) => {
+    const updatedProducts = [...products];
+    updatedProducts[index][e.target.name] = e.target.value;
+    setProducts(updatedProducts);
+  };
+
+  // Add a new product row
+  const handleAddProduct = () => {
+    setProducts([...products, { productName: '', price: '', quantity: '', discount: '' }]);
+  };
+
+  // Calculate the total amount for a transaction
+  const calculateTotalAmount = () => {
+    return products.reduce((acc, product) => {
+      const price = parseFloat(product.price || 0);
+      const quantity = parseInt(product.quantity || 0);
+      const discount = parseFloat(product.discount || 0);
+      const totalProductAmount = price * quantity * (1 - discount / 100);
+      return acc + totalProductAmount;
+    }, 0);
+  };
+
+  // Handle submission of a new transaction
   const handleSubmitTransaction = () => {
     if (
       formData.transactionId &&
       formData.transactionDate &&
-      formData.transactionAmount &&
       formData.paymentType &&
-      formData.transactionStatus
+      formData.transactionStatus &&
+      products.every(product => product.productName && product.price && product.quantity)
     ) {
+      const totalAmount = calculateTotalAmount();
+
       setTransactions([
         ...transactions,
         {
           id: formData.transactionId,
           date: formData.transactionDate,
-          amount: parseFloat(formData.transactionAmount),
           paymentType: formData.paymentType,
           status: formData.transactionStatus,
+          totalAmount,
+          products,
         },
       ]);
 
-      // Clear form and hide
+      // Clear form and product fields
       setFormData({
         transactionId: '',
         transactionDate: '',
-        transactionAmount: '',
         paymentType: '',
         transactionStatus: '',
       });
+      setProducts([{ productName: '', price: '', quantity: '', discount: '' }]);
       setShowForm(false);
+    } else {
+      alert("Please fill out all transaction and product fields");
     }
   };
 
-  const totalTransactions = transactions.reduce((acc, cur) => acc + cur.amount, 0);
-  const updatedBalance = balance - totalTransactions;
+  const totalTransactions = transactions.reduce((acc, cur) => acc + cur.totalAmount, 0);
+  const updatedBalance = (balance || 0) - totalTransactions;
 
   return (
-    <div className="container">
+    <div className={styles.container}>
       <h1>Customer Details</h1>
-      <div id="customerInfo">
-        <h2>{name}</h2>
+      <div className={styles.customerInfo}>
+        <h2>Name: {name}</h2>
         <p><strong>Email:</strong> {email}</p>
         <p><strong>Phone:</strong> {phone}</p>
-        <p><strong>Outstanding Balance:</strong>  ₹{updatedBalance.toFixed(2)}</p>
+        <p><strong>Outstanding Balance:</strong> ₹{updatedBalance.toFixed(2)}</p>
       </div>
 
       <h3>Transaction History</h3>
       <button onClick={() => setShowForm(true)}>Add New Transaction</button>
+
       <table>
         <thead>
           <tr>
-            <th>Transaction ID</th>
+            <th>Serial Number</th>
             <th>Date</th>
-            <th>Amount</th>
+            <th>Total Amount</th>
             <th>Payment Type</th>
             <th>Status</th>
           </tr>
@@ -82,39 +116,32 @@ const CustomerDetails = () => {
         <tbody>
           {transactions.map((transaction, index) => (
             <tr key={index}>
-              <td>{transaction.id}</td>
+              <td></td>
               <td>{transaction.date}</td>
-              <td> ₹{transaction.amount.toFixed(2)}</td>
+              <td>₹{transaction.totalAmount.toFixed(2)}</td>
               <td>{transaction.paymentType}</td>
               <td>{transaction.status}</td>
+              {/* <td>
+                <ul>
+                  {transaction.products.map((product, i) => (
+                    <li key={i}>
+                      {product.productName} - Price: ₹{product.price}, Quantity: {product.quantity}, Discount: {product.discount}%
+                    </li>
+                  ))}
+                </ul>
+              </td> */}
             </tr>
           ))}
         </tbody>
       </table>
 
       {showForm && (
-        <div id="transactionForm">
+        <div className={styles.transactionForm}>
           <h3>Add Transaction</h3>
-          <input
-            type="text"
-            id="transactionId"
-            placeholder="Transaction ID"
-            value={formData.transactionId}
-            onChange={handleInputChange}
-            required
-          />
           <input
             type="date"
             id="transactionDate"
             value={formData.transactionDate}
-            onChange={handleInputChange}
-            required
-          />
-          <input
-            type="number"
-            id="transactionAmount"
-            placeholder="Amount"
-            value={formData.transactionAmount}
             onChange={handleInputChange}
             required
           />
@@ -139,6 +166,45 @@ const CustomerDetails = () => {
             <option value="Completed">Completed</option>
             <option value="Failed">Failed</option>
           </select>
+
+          <h4>Products</h4>
+          {products.map((product, index) => (
+            <div key={index} className={styles.productRow}>
+              <input
+                type="text"
+                name="productName"
+                placeholder="Product Name"
+                value={product.productName}
+                onChange={(e) => handleProductChange(index, e)}
+                required
+              />
+              <input
+                type="number"
+                name="price"
+                placeholder="Price"
+                value={product.price}
+                onChange={(e) => handleProductChange(index, e)}
+                required
+              />
+              <input
+                type="number"
+                name="quantity"
+                placeholder="Quantity"
+                value={product.quantity}
+                onChange={(e) => handleProductChange(index, e)}
+                required
+              />
+              <input
+                type="number"
+                name="discount"
+                placeholder="Discount (%)"
+                value={product.discount}
+                onChange={(e) => handleProductChange(index, e)}
+              />
+            </div>
+          ))}
+          <button onClick={handleAddProduct}>Add Another Product</button>
+
           <button onClick={handleSubmitTransaction}>Add Transaction</button>
           <button onClick={() => setShowForm(false)}>Close</button>
         </div>

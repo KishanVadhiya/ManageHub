@@ -1,38 +1,37 @@
-import { useEffect, useState } from 'react';
-import './Invoice.css';
+import { useState } from "react";
+import styles from "./Invoice.module.css";
 const MyForm = () => {
-
-  
   const [itemCount, setItemCount] = useState(0);
   const [items, setItems] = useState([]);
+  const [selectedPayment, setSelectedPayment] = useState("bank-transfer");
+
   const [totals, setTotals] = useState({
     totalBeforeTax: 0,
     tax: 0,
     totalAfterTax: 0,
   });
 
+  // useEffect(()=>{
+  //   const token = localStorage.getItem('token');
+  //   const repsonse = await axios.get('http://localhost:5000/api/channels',{
+  //     // headers
+  //     Authorisation: `${token}`
+  //   });
+  //   setItems(response.data)
 
-  useEffect(()=>{
-    const token = localStorage.getItem('token');
-    const repsonse = await axios.get('http://localhost:5000/api/channels',{
-      // headers
-      Authorisation: `${token}`
-    });
-    setItems(response.data)
-
-  })
+  // })
 
   const handleAddItem = () => {
     setItemCount(itemCount + 1);
     setItems([
       ...items,
-      { id: itemCount + 1, name: '', price: 0, quantity: 0, amount: 0 },
+      { id: itemCount + 1, name: "", price: 0, quantity: 0, amount: 0 },
     ]);
   };
 
   const handleItemChange = (index, field, value) => {
     const newItems = [...items];
-    newItems[index][field] = field === 'name' ? value : parseFloat(value);
+    newItems[index][field] = field === "name" ? value : parseFloat(value);
     newItems[index].amount = newItems[index].price * newItems[index].quantity;
     setItems(newItems);
     updateTotals(newItems);
@@ -51,7 +50,7 @@ const MyForm = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     // Handle form submission (e.g., send data to the server)
-    alert('Form submitted successfully!');
+    alert("Form submitted successfully!");
   };
   const handleDeleteItem = (index) => {
     const newItems = items.filter((_, i) => i !== index);
@@ -60,19 +59,19 @@ const MyForm = () => {
     setItemCount(itemCount - 1);
   };
   return (
-    <div className="main-container">
+    <div className={styles.mainContainer}>
       <form id="main-form" onSubmit={handleSubmit}>
-        <div className="container1">
-          <div className="container">
+        <div className={styles.container1}>
+          <div className={styles.container}>
             <h2>
               <i
                 className="fa-solid fa-rectangle-list"
                 style={{
-                  color: '#6d33ef',
-                  backgroundColor: 'white',
-                  fontSize: '25px',
+                  color: "#6d33ef",
+                  backgroundColor: "white",
+                  fontSize: "25px",
                 }}
-              ></i>{' '}
+              ></i>{" "}
               General Information
             </h2>
             <div className="mt-4">
@@ -91,10 +90,10 @@ const MyForm = () => {
             <div className="mt-4">
               <label>Receipt type</label>
               <div className="mt-1">
-                <label className="inline-flex items-center">
+                <label className={styles.inlineFlex}>
                   <input
                     type="radio"
-                    className="form-radio"
+                    className={styles.formRadio}
                     name="receipt-type"
                     value="paper-receipt"
                     required
@@ -102,12 +101,12 @@ const MyForm = () => {
                   <span>Paper receipt</span>
                 </label>
                 <label
-                  className="inline-flex items-center"
-                  style={{ marginLeft: '1.5rem' }}
+                  className={styles.inlineFlex}
+                  style={{ marginLeft: "1.5rem" }}
                 >
                   <input
                     type="radio"
-                    className="form-radio"
+                    className={styles.formRadio}
                     name="receipt-type"
                     value="e-receipt"
                   />
@@ -119,22 +118,22 @@ const MyForm = () => {
               <label htmlFor="notes">Notes</label>
               <textarea
                 id="notes"
-                className="textarea"
+                className={styles.textarea}
                 placeholder="Note Here..."
               ></textarea>
             </div>
           </div>
 
-          <div className="container">
+          <div className={styles.container}>
             <h2>
               <i
                 className="bi bi-person-circle"
                 style={{
-                  color: '#6d33ef',
-                  backgroundColor: 'white',
-                  fontSize: '25px',
+                  color: "#6d33ef",
+                  backgroundColor: "white",
+                  fontSize: "25px",
                 }}
-              ></i>{' '}
+              ></i>{" "}
               Customer Information
             </h2>
             <div className="mt-4">
@@ -143,32 +142,40 @@ const MyForm = () => {
             </div>
             <div className="mt-4">
               <label htmlFor="phone">Phone</label>
-              <div className="phonesms">
+              <div className={styles.phonesms}>
                 <input
                   type="text"
                   id="phone"
-                  className=" phone1"
+                  className={styles.phone1}
                   required
                   placeholder="Ex. 9876543210"
                 />
                 <div>
-                  <input type="checkbox" className="form-checkbox" id="send-sms"/>
+                  <input
+                    type="checkbox"
+                    className={styles.formCheckbox}
+                    id="send-sms"
+                  />
                   <span>Send SMS</span>
                 </div>
               </div>
             </div>
             <div className="mt-4">
               <label htmlFor="email">Email</label>
-              <div className="phonesms">
+              <div className={styles.phonesms}>
                 <input
                   type="email"
                   id="email"
-                  className=" phone1"
+                  className={styles.phone1}
                   required
                   placeholder="Ex. abc@gmail.com"
                 />
                 <div>
-                  <input type="checkbox" className="form-checkbox" id="send-email" />
+                  <input
+                    type="checkbox"
+                    className={styles.formCheckbox}
+                    id="send-email"
+                  />
                   <span>Send Email</span>
                 </div>
               </div>
@@ -194,14 +201,19 @@ const MyForm = () => {
           </div>
         </div>
 
-        <div className="container2">
-          <div className="containerItem">
-            <div className="itemFlex">
-              <h2><i className="bi bi-list-task"
-              style={{
-                fontSize:"25px",
-                color:"#6d33ef"
-              }}></i> Items</h2>
+        <div className={styles.container2}>
+          <div className={styles.containerItem}>
+            <div className={styles.itemFlex}>
+              <h2>
+                <i
+                  className="bi bi-list-task"
+                  style={{
+                    fontSize: "25px",
+                    color: "#6d33ef",
+                  }}
+                ></i>{" "}
+                Items
+              </h2>
               <p>
                 <i className="bi bi-download"></i> Import
               </p>
@@ -221,65 +233,59 @@ const MyForm = () => {
                   <tr key={item.id}>
                     <td>{item.id}</td>
                     <td>
-                      <div className="input-group">
+                      <div className={styles.inputGroup}>
                         <input
                           type="text"
-                          className="form-control"
+                          className={styles.formControl}
                           placeholder="Enter Item Name"
                           value={item.name}
                           onChange={(e) =>
-                            handleItemChange(index, 'name', e.target.value)
+                            handleItemChange(index, "name", e.target.value)
                           }
                         />
-                        <button
-                          className="btn dropdown-toggle"
-                          type="button"
-                          data-bs-toggle="dropdown"
-                          aria-expanded="false"
-                        ></button>
-                        <ul className="dropdown-menu dropdown-menu-end">
-                          <li>
-                            <a className="dropdown-item" href="#">
-                              Action
-                            </a>
-                          </li>
-                        </ul>
+                        
+                       
                       </div>
                     </td>
                     <td>
                       <input
                         type="number"
-                        className="item-price"
+                        className={styles.itemPrice}
                         required
                         placeholder="Enter Price"
                         value={item.price}
                         onChange={(e) =>
-                          handleItemChange(index, 'price', e.target.value)
+                          handleItemChange(index, "price", e.target.value)
                         }
                       />
                     </td>
                     <td>
                       <input
                         type="number"
-                        className="item-quantity"
+                        className={styles.itemQuantity}
                         required
                         placeholder="Quantity"
                         value={item.quantity}
                         onChange={(e) =>
-                          handleItemChange(index, 'quantity', e.target.value)
+                          handleItemChange(index, "quantity", e.target.value)
                         }
                       />
                     </td>
-                    <td className="item-amount">₹{item.amount.toFixed(2)}</td>
+                    <td className={styles.itemAmount}>
+                      ₹{item.amount.toFixed(2)}
+                    </td>
                     <td>
-                      <i className="fa-regular fa-trash-can" style={{ color: '#ea3d1f', cursor:'pointer'}}
-                      onClick={()=>handleDeleteItem(index)}></i>
+                      <i
+                        className="fa-regular fa-trash-can"
+                        style={{ color: "#ea3d1f", cursor: "pointer" }}
+                        onClick={() => handleDeleteItem(index)}
+                      ></i>
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
-            <div className="addItem">
+            <div className={styles.addItem}>
               <button
                 type="button"
                 className="text-gray-700"
@@ -288,31 +294,35 @@ const MyForm = () => {
               >
                 <i
                   className="fa-light fa-plus"
-                  style={{ color: 'rgb(113, 40, 196)', fontSize: '20px' }}
-                ></i>{' '}
+                  style={{ color: "rgb(113, 40, 196)", fontSize: "20px" }}
+                ></i>{" "}
                 Add Item
               </button>
-              <div className="mt-4 itemTax">
+              <div className={styles.itemTax}>
                 <label>Total before tax</label>
-                <span id="total-before-tax">₹{totals.totalBeforeTax.toFixed(2)}</span>
+                <span id="total-before-tax">
+                  ₹{totals.totalBeforeTax.toFixed(2)}
+                </span>
               </div>
             </div>
-            <div className="finalTax">
-              <div className="mt-2 totalTax">
+            <div className={styles.finalTax}>
+              <div className={styles.totalTax}>
                 <label>
                   Tax <span>5%</span>
                 </label>
                 <span id="tax">₹{totals.tax.toFixed(2)}</span>
               </div>
-              <div className="mt-2 totalTax">
+              <div className={styles.totalTax}>
                 <label>Total after tax</label>
-                <span id="total-after-tax">₹{totals.totalAfterTax.toFixed(2)}</span>
+                <span id="total-after-tax" className={styles.totalAfterTax1}>
+                  ₹{totals.totalAfterTax.toFixed(2)}
+                </span>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="container3">
+        <div className={styles.container3}>
           <h2>
             <i className="bi bi-truck"></i> Shipment
           </h2>
@@ -327,17 +337,12 @@ const MyForm = () => {
           </div>
           <div className="mt-4">
             <label htmlFor="ship-to">Ship to</label>
-            <div className="shipto">
-              <input
-                type="text"
-                id="ship-to"
-                required
-                placeholder="Location"
-              />
+            <div className={styles.shipto}>
+              <input type="text" id="ship-to" required placeholder="Location" />
               <p>Edit</p>
             </div>
           </div>
-          <div className="mt-4 shipmentCode">
+          <div className={styles.shipmentCode}>
             <div>
               <label htmlFor="center-code">Center code</label>
               <input
@@ -359,63 +364,70 @@ const MyForm = () => {
           </div>
         </div>
 
-        <div className="container4">
-          <h2>Payment</h2>
-          <div
-            className="btn-group"
-            role="group"
-            aria-label="Basic radio toggle button group"
-          >
-            <input
-              type="radio"
-              className="btn-check"
-              name="btnradio"
-              id="btnradio2"
-              autoComplete="off"
-              checked
-            />
-            <label className="btn pay" htmlFor="btnradio1">
-              Bank Transfer
-            </label>
+        <div className={styles.container4}>
+          <div className={styles.container4}>
+            <h2>Payment</h2>
+            <div
+              className={styles.btnGroup}
+              role="group"
+              aria-label="Basic radio toggle button group"
+            >
+              <input
+                type="radio"
+                className={styles.btnCheck}
+                name="btnradio"
+                id="btnradio1"
+                value="bank-transfer"
+                checked={selectedPayment === "bank-transfer"}
+                onChange={() => setSelectedPayment("bank-transfer")}
+              />
+              <label className={styles.pay} htmlFor="btnradio1">
+                Bank Transfer
+              </label>
 
-            <input
-              type="radio"
-              className="btn-check"
-              name="btnradio"
-              id="btnradio1"
-              autoComplete="off"
-            />
-            <label className="btn pay" htmlFor="btnradio2">
-              Cash
-            </label>
-          </div>
-          <div className="mt-4 paymentBank">
-            <div>
-              <label htmlFor="bank-name">Bank</label>
               <input
-                type="text"
-                id="bank-name"
-                required
-                placeholder="Enter Bank Name"
+                type="radio"
+                className={styles.btnCheck}
+                name="btnradio"
+                id="btnradio2"
+                value="cash"
+                checked={selectedPayment === "cash"}
+                onChange={() => setSelectedPayment("cash")}
               />
+              <label className={styles.pay} htmlFor="btnradio2">
+                Cash
+              </label>
             </div>
-            <div>
-              <label htmlFor="account-number">Account number</label>
-              <input
-                type="text"
-                id="account-number"
-                required
-                placeholder="Enter Account Number"
-              />
-            </div>
+
+            {selectedPayment === "bank-transfer" && (
+              <div className={styles.paymentBank}>
+                <div>
+                  <label htmlFor="bank-name">Bank</label>
+                  <input
+                    type="text"
+                    id="bank-name"
+                    required
+                    placeholder="Enter Bank Name"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="account-number">Account number</label>
+                  <input
+                    type="text"
+                    id="account-number"
+                    required
+                    placeholder="Enter Account Number"
+                  />
+                </div>
+              </div>
+            )}
           </div>
-          <div className="mt-4 currencyCode">
+          <div className={styles.currencyCode}>
             <div>
               <label htmlFor="currency">Currency</label>
               <select id="currency" required>
                 <option value="" selected disabled>
                   Select currency
-                  
                 </option>
                 <option value=""> ₹</option>
                 {/* Currency options */}
@@ -430,26 +442,28 @@ const MyForm = () => {
                 placeholder="Ex. 1234"
               />
             </div>
-            <div className="save">
+            <div className={styles.save}>
               <label>Save</label>
-              <label className="switch">
+              <label className={styles.switch}>
                 <input type="checkbox" />
-                <span className="slider"></span>
+                <span className={styles.slider}></span>
               </label>
             </div>
           </div>
         </div>
 
-        <div className="container5">
-        <i className="bi bi-exclamation-triangle" style={{ color: '#ee59a6' }}></i>{' '}
+        <div className={styles.container5}>
+          <i
+            className="bi bi-exclamation-triangle"
+            style={{ color: "#ee59a6" }}
+          ></i>{" "}
           <p>
-            
-            Individual often indicates not a considerable irregular merchant behavior. Cases
-            prudent risk ratios, otherwise do dollar calculator hours even weeks companies
-            its own methods to rule-out minimal.
+            Individual often indicates not a considerable irregular merchant
+            behavior. Cases prudent risk ratios, otherwise do dollar calculator
+            hours even weeks companies its own methods to rule-out minimal.
           </p>
         </div>
-        <div className="submit">
+        <div className={styles.submit}>
           <button type="submit">Submit</button>
         </div>
       </form>

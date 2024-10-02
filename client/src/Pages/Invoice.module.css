@@ -8,7 +8,7 @@ body {
     
 }
 
-.main-container{
+.mainContainer{
    
     background-color: rgb(246, 246, 246);
     padding: 1.5rem;
@@ -18,7 +18,7 @@ body {
     justify-content: center;
     gap:2rem;
 }
-.input-group input{
+.inputGroup input{
     display: block;
     width: 100%;
     margin-top: 0.55rem;
@@ -67,7 +67,7 @@ body {
     border-radius: 0.375rem;
     width:500px;
 }.container4{
-    width:100%;
+    width:70%;
     padding:1.5rem ;
 }
 
@@ -99,7 +99,7 @@ body {
     cursor: pointer;
     
 }
-.btn-check+.btn:hover{
+.btnCheck+.btn:hover{
     background: #ff7b43;
 }
 .itemTax{
@@ -113,7 +113,7 @@ body {
     gap:1rem;
     align-items: center;
 }
-.totalTax label span, #total-after-tax{
+.totalTax label span, .totalAfterTax1{
     color: #6d33ef;
     font: bold;
     font-weight: 600;
@@ -141,10 +141,13 @@ body {
 .paymentBank{
     display: flex;
     justify-content: space-between;
+    gap:10px;
+    margin-top: 10px;
    
 }
 .paymentBank input{
-    width: 350px;
+    width: 250px;
+
 }
 .currencyCode{
     display: flex;
@@ -216,13 +219,13 @@ input, select, textarea {
     border-radius: 0.375rem;
     border: none;
 }
-.inline-flex {
+.inlineFlex {
     display: inline-flex;
     align-items: center;
     
 }
 
-.form-radio, .form-checkbox {
+.formRadio, .formCheckbox {
     margin-right: 0.5rem;
     width: 15px;
 
@@ -263,7 +266,7 @@ tbody input{
     width:70%;
     border-radius: 2px;
 }
-.item-quantity{
+.itemQuantity{
     width:50%;
 }
 button {
@@ -274,8 +277,9 @@ button {
     border: none;
     background-color: #6d33ef;
     color: white;
+    float: left;
 }
-.text-white {
+.textWhite {
     color: white;
 }
 .submit{
@@ -351,3 +355,34 @@ button {
 .switch{
     line-height: 9vh;
 }
+.btnGroup {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .btnCheck {
+    display: none; /* Hide actual radio buttons */
+  }
+  
+  .pay {
+    background-color: #eee;
+    color: #000;
+    border: 2px solid #ccc;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border-radius: 5px;
+  }
+  
+  .btnCheck:checked + .pay {
+    background-color: #6d33ef; /* Active state */
+    color: white;
+  }
+  
+  .btnGroup label {
+    flex: 1;
+    text-align: center;
+    margin: 0 5px;
+  }
+  

@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';  // Import useNavigate
-import './customerManage.css';
+import { useNavigate } from 'react-router-dom';  
+import styles from './customerManage.module.css'; // Import the CSS module
 
 const CustomerManagement = () => {
   const [customers, setCustomers] = useState([]);
@@ -8,11 +8,11 @@ const CustomerManagement = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    phone: '',
+    phone: '',     
     balance: 0.0,
   });
 
-  const navigate = useNavigate();  // Initialize useNavigate
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     setFormData({
@@ -52,24 +52,25 @@ const CustomerManagement = () => {
         phone: customer.phone,
         balance: customer.balance,
       },
-    });  // Use navigate instead of window.location.href
+    });
   };
 
   return (
-    <div className="container">
+    <div className={styles.container}> {/* Use module styles */}
       <h1>Customer Management</h1>
-      <div className="search-add-container">
+      <div className={styles.searchAddContainer}> {/* Updated class names */}
         <input
           type="text"
           id="searchCustomers"
           placeholder="Search Customers..."
+          className={styles.searchInput}
         />
-        <button className="add-btn" onClick={() => setShowForm(true)}>
+        <button className={styles.addBtn} onClick={() => setShowForm(true)}> {/* Updated class name */}
           Add New Customer
         </button>
       </div>
 
-      <table>
+      <table className={styles.customerTable}> {/* Use module styles */}
         <thead>
           <tr>
             <th>Name</th>
@@ -83,8 +84,9 @@ const CustomerManagement = () => {
           {customers.map((customer, index) => (
             <tr key={index}>
               <td
-                onDoubleClick={() => openCustomerDetails(customer)} // Double click event
-                style={{ cursor: 'pointer' }} // Cursor change for better UX
+                onDoubleClick={() => openCustomerDetails(customer)}
+                style={{ cursor: 'pointer' }}
+                className={styles.customerName}
               >
                 {customer.name}
               </td>
@@ -98,7 +100,7 @@ const CustomerManagement = () => {
       </table>
 
       {showForm && (
-        <div className="customer-form">
+        <div className={styles.customerForm}> {/* Updated class */}
           <h3>Add Customer</h3>
           <input
             type="text"
@@ -107,6 +109,7 @@ const CustomerManagement = () => {
             value={formData.name}
             onChange={handleInputChange}
             required
+            className={styles.formInput} 
           />
           <input
             type="email"
@@ -115,6 +118,7 @@ const CustomerManagement = () => {
             value={formData.email}
             onChange={handleInputChange}
             required
+            className={styles.formInput} 
           />
           <input
             type="text"
@@ -123,6 +127,7 @@ const CustomerManagement = () => {
             value={formData.phone}
             onChange={handleInputChange}
             required
+            className={styles.formInput} 
           />
           <input
             type="number"
@@ -131,10 +136,11 @@ const CustomerManagement = () => {
             value={formData.balance}
             onChange={handleInputChange}
             required
+            className={styles.formInput}
           />
-          <div className="form-buttons">
-            <button onClick={handleSubmitCustomer}>Add Customer</button>
-            <button onClick={() => setShowForm(false)}>Close</button>
+          <div className={styles.formButtons}>
+            <button onClick={handleSubmitCustomer} className={styles.submitBtn}>Add Customer</button>
+            <button onClick={() => setShowForm(false)} className={styles.closeBtn}>Close</button>
           </div>
         </div>
       )}
