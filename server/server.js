@@ -26,13 +26,13 @@ mongoose.connect(process.env.MONGO_URI, {
 // Import routes (we will create these routes in the next steps)
 const authRoutes = require('./routes/auth');
 // const invoiceRoutes = require('./routes/invoice');
-// const inventoryRoutes = require('./routes/inventory');
+const inventoryRoutes = require('./routes/inventory');
 // const userInfoRoutes = require('./routes/userInfo');
 
 // Use routes
 app.use('/api/auth', authRoutes);
 // app.use('/api/invoices', invoiceRoutes);
-// app.use('/api/inventory', inventoryRoutes);
+app.use('/api/inventory', inventoryRoutes);
 // app.use('/api/user-info', userInfoRoutes);
 
 // Start the server
