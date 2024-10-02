@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styles from './customerManage.module.css'; // Import CSS module
+import styles from './customerManage.module.css';
 
 const CustomerManagement = () => {
   const [customers, setCustomers] = useState([]);
@@ -14,6 +14,28 @@ const CustomerManagement = () => {
   const [editIndex, setEditIndex] = useState(null);
   const navigate = useNavigate();
 
+  const token = localStorage.getItem('token'); // Assume token is stored in local storage
+
+  // Fetch customers on component mount
+  useEffect(() => {
+    fetchCustomers();
+  }, []);
+
+  const fetchCustomers = async () => {
+    try {
+      const response = await fetch('http://localhost:3000/api/userinfo', {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token, // Add token directly
+        },
+      });
+      const data = await response.json();
+      setCustomers(data);
+    } catch (error) {
+      console.error('Error fetching customers:', error);
+    }
+  };
+
   const handleInputChange = (e) => {
     setFormData({
       ...formData,
@@ -21,36 +43,43 @@ const CustomerManagement = () => {
     });
   };
 
-  const handleSubmitCustomer = () => {
+  const handleSubmitCustomer = async () => {
     if (formData.name && formData.email && formData.phone) {
-      if (editIndex !== null) {
-        const updatedCustomers = [...customers];
-        updatedCustomers[editIndex] = {
-          ...formData,
-          balance: parseFloat(formData.balance).toFixed(2),
-        };
-        setCustomers(updatedCustomers);
-      } else {
-        setCustomers([
-          ...customers,
-          {
-            name: formData.name,
-            email: formData.email,
-            phone: formData.phone,
-            balance: parseFloat(formData.balance).toFixed(2),
-          },
-        ]);
+      try {
+        if (editIndex !== null) {
+          // Update existing customer
+          await fetch(`http://localhost:3000/api/userinfo/${customers[editIndex]._id}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': token,
+            },
+            body: JSON.stringify(formData),
+          });
+        } else {
+          // Add new customer
+          await fetch('http://localhost:3000/api/userinfo', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': token,
+            },
+            body: JSON.stringify(formData),
+          });
+        }
+        fetchCustomers(); // Refresh customers list
+        // Clear form and reset
+        setFormData({
+          name: '',
+          email: '',
+          phone: '',
+          balance: 0.0,
+        });
+        setShowForm(false);
+        setEditIndex(null);
+      } catch (error) {
+        console.error('Error submitting customer:', error);
       }
-
-      // Clear form and reset
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        balance: 0.0,
-      });
-      setShowForm(false);
-      setEditIndex(null);
     }
   };
 
@@ -71,9 +100,18 @@ const CustomerManagement = () => {
     setEditIndex(index);
   };
 
-  const handleDeleteCustomer = (index) => {
-    const updatedCustomers = customers.filter((_, i) => i !== index);
-    setCustomers(updatedCustomers);
+  const handleDeleteCustomer = async (index) => {
+    try {
+      await fetch(`http://localhost:3000/api/userinfo/${customers[index]._id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': token,
+        },
+      });
+      fetchCustomers(); // Refresh customer list after deletion
+    } catch (error) {
+      console.error('Error deleting customer:', error);
+    }
   };
 
   return (
@@ -159,7 +197,7 @@ const CustomerManagement = () => {
               </td>
               <td>{customer.email}</td>
               <td>{customer.phone}</td>
-              <td>${customer.balance}</td>
+              <td>${customer.outstandingBalance}</td>
               <td>-</td>
               <td className={styles.actionsCell}>
                 <i
