@@ -1,99 +1,75 @@
-// import React from 'react';
-import './about.css'; // Import your CSS styles here
+import styles from './about.module.css'; // Import the CSS module
 
-const AboutUs = () => {
-    return (
-        <div>
-            <div className="about-container">
-                <div className="about-overlay"></div>
-                <div className="about-content">
-                    <h1>About Us</h1>
-                    <p>
-                        Our accounting software is designed to provide innovative and effective solutions for your business needs. 
-                        With an intuitive interface and powerful features, our goal is to help you manage your finances with ease.
-                    </p>
-                    <div className="team">
-                        <img src="https://images.unsplash.com/photo-1517365830460-955ce3ccd263?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDJ8fHBlcnNvbnxlbnwwfHx8fDE2ODc3NTg2OTM&ixlib=rb-1.2.1&q=80&w=1080" alt="Team Member" />
-                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDN8fHBlcnNvbnxlbnwwfHx8fDE2ODc3NTg2ODQ&ixlib=rb-1.2.1&q=80&w=1080" alt="Team Member" />
-                        <img src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDV8fHBlcnNvbnxlbnwwfHx8fDE2ODc3NTg2NzA&ixlib=rb-1.2.1&q=80&w=1080" alt="Team Member" />
-                    </div>
-                </div>
-            </div>
-
-            {/* Features Section */}
-            <section className="features">
-                <div className="feature-item">
-                    <img src="https://img.icons8.com/external-flatart-icons-lineal-flatarticons/64/000000/external-security-cyber-monday-flatart-icons-lineal-flatart-icons.png" alt="Security Icon" />
-                    <h3>Secure & Reliable</h3>
-                    <p>Top-notch security to protect your data 24/7.</p>
-                </div>
-                <div className="feature-item">
-                    <img src="https://img.icons8.com/external-flatart-icons-flat-flatarticons/64/000000/external-automation-data-analytics-flatart-icons-flat-flatart-icons.png" alt="Automation Icon" />
-                    <h3>Automated Features</h3>
-                    <p>Automated reports and updates save time.</p>
-                </div>
-                <div className="feature-item">
-                    <img src="https://img.icons8.com/external-flatart-icons-flat-flatarticons/64/000000/external-user-business-strategy-flatart-icons-flat-flatart-icons.png" alt="User Icon" />
-                    <h3>User Friendly</h3>
-                    <p>Designed with simplicity and ease-of-use in mind.</p>
-                </div>
-            </section>
-
-            {/* Testimonials Section */}
-            <section className="testimonials">
-                <h2>What Our Clients Say</h2>
-                <div className="testimonial">
-                    <div className="testimonial-item">
-                        <img src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDV8fHBlcnNvbnxlbnwwfHx8fDE2ODc3NTg2NzA&ixlib=rb-1.2.1&q=80&w=1080" alt="Client Photo" />
-                        <p>This software has revolutionized our accounting process! Highly recommended.</p>
-                        <h4>- Sarah James, CEO</h4>
-                    </div>
-                    <div className="testimonial-item">
-                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDN8fHBlcnNvbnxlbnwwfHx8fDE2ODc3NTg2ODQ&ixlib=rb-1.2.1&q=80&w=1080" alt="Client Photo" />
-                        <p>The automation features are a game changer for our business. So easy to use!</p>
-                        <h4>- David Lee, CFO</h4>
-                    </div>
-                </div>
-            </section>
-
-            {/* Newsletter Section */}
-            <section className="newsletter">
-                <h2>Subscribe to Our Newsletter</h2>
-                <p>Stay updated with the latest features and offers.</p>
-                <form>
-                    <input type="email" placeholder="Enter your email" required />
-                    <button type="submit">Subscribe</button>
-                </form>
-            </section>
-
-            {/* Footer Section */}
-            <footer className="footer">
-                <div className="footer-container">
-                    <div className="footer-links">
-                        <ul>
-                            <li><a href="#">Privacy Policy</a></li>
-                            <li><a href="#">Terms of Service</a></li>
-                            <li><a href="#">Contact Us</a></li>
-                            <li><a href="#">Features</a></li>
-                            <li><a href="#">Support</a></li>
-                        </ul>
-                    </div>
-                    <div className="footer-social">
-                        <h3>Follow Us</h3>
-                        <div className="social-icons">
-                            <a href="#"><img src="https://img.icons8.com/ios-filled/50/ffffff/facebook-new.png" alt="Facebook" /></a>
-                            <a href="#"><img src="https://img.icons8.com/ios-filled/50/ffffff/twitter-squared.png" alt="Twitter" /></a>
-                            <a href="#"><img src="https://img.icons8.com/ios-filled/50/ffffff/linkedin.png" alt="LinkedIn" /></a>
-                            <a href="#"><img src="https://img.icons8.com/ios-filled/50/ffffff/instagram-new.png" alt="Instagram" /></a>
-                        </div>
-                    </div>
-                </div>
-                <div className="footer-bottom">
-                    <p>&copy; 2024 Your Company Name. All rights reserved.</p>
-                </div>
-            </footer>
+const About = () => {
+  return (
+    <div className={styles.aboutPage}>
+      <header className={styles.headerContainer}>
+        <h1 className={styles.headerHeading}>About Us</h1>
+        <p className={styles.headerSubheading}>Learn about our mission, services, and commitment to empowering businesses.</p>
+      </header>
+      
+      <section className={styles.introSection}>
+        <div className={styles.intro}>
+          <img src="https://source.unsplash.com/featured/?business,office" alt="About Us" className={styles.introImage} />
+          <div className={styles.introText}>
+            <h2>Our Story</h2>
+            <p>Founded in 2024, *ManageHub* started with the vision of simplifying accounting and business management for organizations of all sizes. Our founders, with extensive experience in accounting and software development, realized the growing need for efficient tools to help businesses streamline their financial operations.</p>
+            <p>Over the years, ManageHub has become a trusted partner for business owners, accountants, and entrepreneurs. Our platform provides innovative solutions to manage finances, track invoices, handle multiple accounts, and manage inventory – all in one easy-to-use system.</p>
+            <p>From the launch of our flagship accounting software to the expansion of our product offerings, we’ve helped businesses across various sectors manage their operations more effectively. Our user-centric approach and focus on customer satisfaction have allowed us to build strong, lasting relationships with our clients.</p>
+            <p>As we continue to evolve, our mission remains clear: to provide intuitive, powerful tools that help businesses achieve financial success and growth. We’re proud to partner with businesses worldwide, empowering them with the technology they need to thrive.</p>
+          </div>
         </div>
-    );
+      </section>
+
+      <section className={styles.missionSection}>
+        <h2>Our Mission</h2>
+        <p>Our mission is to empower businesses with innovative accounting solutions. We strive to simplify financial management through cutting-edge technology, enabling organizations to focus on growth and success.</p>
+      </section>
+
+      <section className={styles.servicesSection}>
+        <h2>Our Services</h2>
+        <div className={styles.servicesGrid}>
+          <div className={styles.serviceCard}>
+            <img src="https://source.unsplash.com/featured/?document,technology" alt="Document Detection" className={styles.serviceImage} />
+            <h3>Business Accounting</h3>
+            <p>Comprehensive accounting tools for managing your business’s finances, including income tracking, expenses, and tax preparation.</p>
+          </div>
+          <div className={styles.serviceCard}>
+            <img src="https://source.unsplash.com/featured/?inventory,management" alt="Inventory Management" className={styles.serviceImage} />
+            <h3>Inventory Management</h3>
+            <p>Streamline your inventory with our tracking system, ensuring you’re always aware of stock levels, sales, and purchases.</p>
+          </div>
+          <div className={styles.serviceCard}>
+            <img src="https://source.unsplash.com/featured/?billing,invoices" alt="Invoice & Billing" className={styles.serviceImage} />
+            <h3>Invoice & Billing</h3>
+            <p>Create and manage invoices with ease, track pending payments, and keep your cash flow organized with automated billing features.</p>
+          </div>
+        </div>
+      </section>
+
+      <div className={styles.contributors}>
+        <h2>Contributors</h2>
+        <div className={styles.contributorsGrid}>
+          <div className={styles.card}>
+            <img src="https://source.unsplash.com/random/100x100?person" alt="Contributor 1" width={'100px'} className={styles.cardImage} />
+            <h4>POOJAN PATEL</h4>
+          </div>
+          <div className={styles.card}>
+            <img src="https://source.unsplash.com/random/100x100?person" alt="Contributor 2" className={styles.cardImage} />
+            <h4>NEEL PATEL</h4>
+          </div>
+          <div className={styles.card}>
+            <img src="https://source.unsplash.com/random/100x100?person" alt="Contributor 3" className={styles.cardImage} />
+            <h4>PARTH SOJITRA</h4>
+          </div>
+          <div className={styles.card}>
+            <img src="https://source.unsplash.com/random/100x100?person" alt="Contributor 4" className={styles.cardImage} />
+            <h4>JAY THORIYA</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
-export default AboutUs;
+export default About;

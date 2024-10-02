@@ -81,9 +81,6 @@ button {
     width: 100%;
 }
 
-button:hover {
-    background-color: #4cae4c;
-}
 
 .error {
     color: red;

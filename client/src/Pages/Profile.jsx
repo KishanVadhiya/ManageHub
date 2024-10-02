@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import styles from './ProfileForm.module.css'; // Import the CSS module
+import styles from './Profile.module.css'; // Import the CSS module
 
 const ProfileForm = () => {
   // Define state variables for the form fields

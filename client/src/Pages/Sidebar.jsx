@@ -35,7 +35,9 @@ const Sidebar = () => {
         <div className={styles.profile}>
           <i className="fas fa-user-circle"></i> {/* Replace with your profile icon */}
           <div className={styles.profileInfo}>
-            <span className={styles.userName}>Emily</span>
+            <Link to="/profile" className={styles.userName} onClick={() => setActiveItem("/profile")}>
+              Poojan
+            </Link> {/* Make username a clickable link to profile page */}
             <span className={styles.userEmail}>emily@example.com</span>
           </div>
         </div>

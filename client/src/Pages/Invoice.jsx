@@ -219,8 +219,8 @@ const MyForm = () => {
               </p>
             </div>
             <table>
-              <thead>
-                <tr>
+              <thead className={styles.theadInvoice}>
+                <tr className={styles.thInvoice}>
                   <th>No.</th>
                   <th>Items</th>
                   <th>Unit Price</th>
@@ -339,7 +339,7 @@ const MyForm = () => {
             <label htmlFor="ship-to">Ship to</label>
             <div className={styles.shipto}>
               <input type="text" id="ship-to" required placeholder="Location" />
-              <p>Edit</p>
+          
             </div>
           </div>
           <div className={styles.shipmentCode}>

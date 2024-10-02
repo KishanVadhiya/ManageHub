@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';  
-import styles from './customerManage.module.css'; // Import the CSS module
+import { useNavigate } from 'react-router-dom';
+import styles from './customerManage.module.css'; // Import CSS module
 
 const CustomerManagement = () => {
   const [customers, setCustomers] = useState([]);
@@ -8,10 +8,10 @@ const CustomerManagement = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    phone: '',     
+    phone: '',
     balance: 0.0,
   });
-
+  const [editIndex, setEditIndex] = useState(null);
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
@@ -23,17 +23,26 @@ const CustomerManagement = () => {
 
   const handleSubmitCustomer = () => {
     if (formData.name && formData.email && formData.phone) {
-      setCustomers([
-        ...customers,
-        {
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone,
+      if (editIndex !== null) {
+        const updatedCustomers = [...customers];
+        updatedCustomers[editIndex] = {
+          ...formData,
           balance: parseFloat(formData.balance).toFixed(2),
-        },
-      ]);
+        };
+        setCustomers(updatedCustomers);
+      } else {
+        setCustomers([
+          ...customers,
+          {
+            name: formData.name,
+            email: formData.email,
+            phone: formData.phone,
+            balance: parseFloat(formData.balance).toFixed(2),
+          },
+        ]);
+      }
 
-      // Clear form and hide it
+      // Clear form and reset
       setFormData({
         name: '',
         email: '',
@@ -41,6 +50,7 @@ const CustomerManagement = () => {
         balance: 0.0,
       });
       setShowForm(false);
+      setEditIndex(null);
     }
   };
 
@@ -55,22 +65,79 @@ const CustomerManagement = () => {
     });
   };
 
+  const handleEditCustomer = (index) => {
+    setFormData(customers[index]);
+    setShowForm(true);
+    setEditIndex(index);
+  };
+
+  const handleDeleteCustomer = (index) => {
+    const updatedCustomers = customers.filter((_, i) => i !== index);
+    setCustomers(updatedCustomers);
+  };
+
   return (
-    <div className={styles.container}> {/* Use module styles */}
+    <div className={styles.container}>
       <h1>Customer Management</h1>
-      <div className={styles.searchAddContainer}> {/* Updated class names */}
+
+      <div className={styles.searchAddContainer}>
         <input
           type="text"
           id="searchCustomers"
           placeholder="Search Customers..."
           className={styles.searchInput}
         />
-        <button className={styles.addBtn} onClick={() => setShowForm(true)}> {/* Updated class name */}
-          Add New Customer
+        <button className={styles.addBtn} onClick={() => setShowForm(true)}>
+          + Add New Customer
         </button>
       </div>
 
-      <table className={styles.customerTable}> {/* Use module styles */}
+      {showForm && (
+        <div className={styles.customerForm}>
+          <input
+            type="text"
+            id="name"
+            placeholder="Name"
+            value={formData.name}
+            onChange={handleInputChange}
+            className={styles.formInput}
+          />
+          <input
+            type="email"
+            id="email"
+            placeholder="Email"
+            value={formData.email}
+            onChange={handleInputChange}
+            className={styles.formInput}
+          />
+          <input
+            type="text"
+            id="phone"
+            placeholder="Phone"
+            value={formData.phone}
+            onChange={handleInputChange}
+            className={styles.formInput}
+          />
+          <input
+            type="number"
+            id="balance"
+            placeholder="Outstanding Balance"
+            value={formData.balance}
+            onChange={handleInputChange}
+            className={styles.formInput}
+          />
+          <div className={styles.formButtons}>
+            <button onClick={handleSubmitCustomer} className={styles.submitBtn}>
+              {editIndex !== null ? 'Update Customer' : 'Add Customer'}
+            </button>
+            <button onClick={() => setShowForm(false)} className={styles.closeBtn}>
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+
+      <table className={styles.customerTable}>
         <thead>
           <tr>
             <th>Name</th>
@@ -78,6 +145,7 @@ const CustomerManagement = () => {
             <th>Phone</th>
             <th>Outstanding Balance</th>
             <th>Last Transaction</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -86,7 +154,6 @@ const CustomerManagement = () => {
               <td
                 onDoubleClick={() => openCustomerDetails(customer)}
                 style={{ cursor: 'pointer' }}
-                className={styles.customerName}
               >
                 {customer.name}
               </td>
@@ -94,56 +161,22 @@ const CustomerManagement = () => {
               <td>{customer.phone}</td>
               <td>${customer.balance}</td>
               <td>-</td>
+              <td className={styles.actionsCell}>
+                <i
+                  className="fas fa-edit"
+                  onClick={() => handleEditCustomer(index)}
+                  style={{ cursor: 'pointer', marginRight: '10px' }}
+                ></i>
+                <i
+                  className="fas fa-trash"
+                  onClick={() => handleDeleteCustomer(index)}
+                  style={{ cursor: 'pointer', color: 'red' }}
+                ></i>
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
-
-      {showForm && (
-        <div className={styles.customerForm}> {/* Updated class */}
-          <h3>Add Customer</h3>
-          <input
-            type="text"
-            id="name"
-            placeholder="Name"
-            value={formData.name}
-            onChange={handleInputChange}
-            required
-            className={styles.formInput} 
-          />
-          <input
-            type="email"
-            id="email"
-            placeholder="Email"
-            value={formData.email}
-            onChange={handleInputChange}
-            required
-            className={styles.formInput} 
-          />
-          <input
-            type="text"
-            id="phone"
-            placeholder="Phone"
-            value={formData.phone}
-            onChange={handleInputChange}
-            required
-            className={styles.formInput} 
-          />
-          <input
-            type="number"
-            id="balance"
-            placeholder="Outstanding Balance"
-            value={formData.balance}
-            onChange={handleInputChange}
-            required
-            className={styles.formInput}
-          />
-          <div className={styles.formButtons}>
-            <button onClick={handleSubmitCustomer} className={styles.submitBtn}>Add Customer</button>
-            <button onClick={() => setShowForm(false)} className={styles.closeBtn}>Close</button>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

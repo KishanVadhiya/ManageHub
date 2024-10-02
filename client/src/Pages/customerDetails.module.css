@@ -1,9 +1,10 @@
 /* Container Styles */
-.container {
+.containerDetails {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
   font-family: 'Arial', sans-serif;
+  margin-top: -50px;
   color: #333;
 }
 
@@ -50,9 +51,6 @@ button {
   transition: background-color 0.3s ease;
 }
 
-button:hover {
-  background-color: #1f6391;
-}
 
 /* Transaction Form Styles */
 .transactionForm {
@@ -101,19 +99,19 @@ table {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
 }
 
-table th, table td {
+.tableDetails th, .tableDetails td {
   padding: 15px;
   text-align: left;
   font-size: 14px;
   border-bottom: 1px solid #ecf0f1;
 }
 
-table th {
+.tableDetails th {
   background-color: #3498db;
   color: white;
 }
 
-table tr:hover {
+.tableDetails tr:hover {
   background-color: #f7f9fc;
 }
 
@@ -125,7 +123,18 @@ ul {
 ul li {
   margin-bottom: 5px;
 }
-
+.addTransactionBtn{
+  display: flex;
+  gap:10px;
+}
+.addTransactionBtn button{
+  background-color: #134074;
+}
+.addTransactionBtn button:hover{
+  background-color: white;
+  color:#134074;
+  border:1px solid #134074;
+}
 /* Responsive Design */
 @media (max-width: 768px) {
   .productRow {

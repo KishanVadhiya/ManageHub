@@ -9,8 +9,8 @@ body {
 }
 
 .mainContainer{
-   
-    background-color: rgb(246, 246, 246);
+    margin-top: 100vh;
+    background-color: rgb(233, 233, 233);
     padding: 1.5rem;
 }
 .container1{
@@ -97,8 +97,10 @@ body {
     color:rgb(113, 40, 196);
     gap:0.2rem;
     cursor: pointer;
+    width:20%;
     
 }
+
 .btnCheck+.btn:hover{
     background: #ff7b43;
 }
@@ -235,6 +237,7 @@ input, select, textarea {
 }
 .text-gray-700 {
     color: #4a5568;
+    
 }
 .text-gray-900 {
     color: #1a202c;
@@ -258,13 +261,15 @@ th {
     font-size: 0.875rem;
     
 }
-thead{
+.theadInvoice{
     background-color: #f6f8f9;
     border-radius: 10px;
+    
 }
 tbody input{
     width:70%;
     border-radius: 2px;
+  
 }
 .itemQuantity{
     width:50%;
