@@ -1,19 +1,16 @@
-// controllers/userInfoController.js
-
 const UserInfo = require('../models/UserInfo'); // Import the UserInfo model
 
 // Add new user information
 const addUserInfo = async (req, res) => {
-    const { name, email, phone, address } = req.body; // Destructure request body
+    const { name, email, phone, outstandingBalance } = req.body; // Destructure request body
     const userId = req.user.id; // Get the authenticated user's ID
-
 
     try {
         const newUserInfo = new UserInfo({
             name,
             email,
             phone,
-            address,
+            outstandingBalance: outstandingBalance ?? 0, // If no balance provided, use default value 0
             createdBy: userId // Set the createdBy field
         });
 
@@ -21,6 +18,9 @@ const addUserInfo = async (req, res) => {
         res.status(201).json({ message: 'User information added successfully', userInfo: newUserInfo });
     } catch (error) {
         console.error('Error adding user info:', error);
+        if (error.code === 11000) {
+            return res.status(400).json({ message: 'Duplicate email entry' });
+        }
         res.status(500).json({ message: 'Server error' });
     }
 };
@@ -41,12 +41,17 @@ const getUserInfo = async (req, res) => {
 // Edit user information
 const updateUserInfo = async (req, res) => {
     const { id } = req.params; // Get ID from request params
-    const { name, email, phone, address } = req.body; // Destructure request body
+    const { name, email, phone, outstandingBalance } = req.body; // Destructure request body
 
     try {
         const updatedUserInfo = await UserInfo.findOneAndUpdate(
             { _id: id, createdBy: req.user.id }, // Find user info by ID and createdBy
-            { name, email, phone, address },
+            { 
+              name, 
+              email, 
+              phone, 
+              outstandingBalance: outstandingBalance ?? 0 // If no balance provided, use default value 0 
+            },
             { new: true } // Return the updated document
         );
 

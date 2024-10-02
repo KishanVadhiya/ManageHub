@@ -1,16 +1,19 @@
 const express = require('express');
 const router = express.Router();
-const { createInvoice, getAllInvoices, getInvoiceById, updateInvoice, deleteInvoice } = require('../controllers/invoiceController');
-const verifyToken = require('../middleware/authMiddleware');
+const { addInvoice, getInvoiceById, updateInvoice, deleteInvoice, getInvoices } = require('../controllers/invoiceController');
 
-// Apply the middleware to protect the routes
-router.use(verifyToken);
+// Create a new invoice
+router.post('/', addInvoice);
 
-// Define the routes
-router.post('/', createInvoice); // Create a new invoice
-router.get('/', getAllInvoices); // Retrieve all invoices
-router.get('/:id', getInvoiceById); // Get invoice by ID
-router.put('/:id', updateInvoice); // Update an invoice
-router.delete('/:id', deleteInvoice); // Delete an invoice
+// Get all invoices for a specific user with limited details
+router.get('/', getInvoices);
+
+// Update an existing invoice
+router.put('/:id', updateInvoice);
+
+// Delete an existing invoice
+router.delete('/:id', deleteInvoice);
+
+router.get('/:id', getInvoiceById);
 
 module.exports = router;

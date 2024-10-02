@@ -28,13 +28,14 @@ const authRoutes = require('./routes/auth');
 const invoiceRoutes = require('./routes/invoice');
 const inventoryRoutes = require('./routes/inventory');
 const userInfoRoutes = require('./routes/userInfo');
+const transactionRoutes = require('./routes/transaction');
 
 // Use routes
 app.use('/api/auth', authRoutes);
 app.use('/api/invoices', invoiceRoutes);
 app.use('/api/inventory', inventoryRoutes);
 app.use('/api/userinfo', userInfoRoutes);
-
+app.use('/api/transactions', transactionRoutes);
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

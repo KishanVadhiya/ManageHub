@@ -1,8 +1,10 @@
 const mongoose = require('mongoose');
 
+// Define the Invoice schema
 const InvoiceSchema = new mongoose.Schema({
-  clientName: {
-    type: String,
+  userInfoId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'UserInfo', // Reference to the UserInfo model
     required: true,
   },
   products: [{
@@ -11,11 +13,19 @@ const InvoiceSchema = new mongoose.Schema({
       ref: 'Inventory', // Reference to the Inventory model
       required: true,
     },
-    quantity: {
-      type: Number,
+    name: {
+      type: String,
       required: true,
     },
     price: {
+      type: Number,
+      required: true,
+    },
+    discount: {
+      type: Number, // Optional discount field
+      default: 0,
+    },
+    quantity: {
       type: Number,
       required: true,
     },
@@ -24,9 +34,14 @@ const InvoiceSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  createdBy: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User', // Reference to the User model
+  paymentType: {
+    type: String,
+    enum: ['cash', 'check'],
+    required: true,
+  },
+  paymentStatus: {
+    type: String,
+    enum: ['pending', 'completed', 'failed'],
     required: true,
   },
   createdAt: {
@@ -35,6 +50,6 @@ const InvoiceSchema = new mongoose.Schema({
   },
 });
 
-// Create and export the model
+// Create and export the Invoice model
 const Invoice = mongoose.model('Invoice', InvoiceSchema);
 module.exports = Invoice;

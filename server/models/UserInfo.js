@@ -1,5 +1,3 @@
-// models/UserInfo.js
-
 const mongoose = require('mongoose');
 
 // Define the UserInfo schema
@@ -17,9 +15,9 @@ const UserInfoSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    address: {
-        type: String,
-        required: true,
+    outstandingBalance: {
+        type: Number,
+        default: 0, // Default value of 0 for outstanding balance
     },
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
