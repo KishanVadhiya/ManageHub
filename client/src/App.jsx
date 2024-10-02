@@ -38,9 +38,9 @@ const App = () => {
             <Route path="/about" element={isLoggedIn() ?<About />:<Navigate to='/signin' />} />
             <Route path="/Invoice" element={isLoggedIn() ?<Invoice />:<Navigate to='/signin' />} />
             <Route path="/profile" element={isLoggedIn() ?<Profile />:<Navigate to='/signin' />} /> 
-            <Route path="/signin" element={<LoginPage />} />
+            <Route path="/signin" element={isLoggedIn() ?<Navigate to='/customer-management'/>: <LoginPage />} />
             {/* <Route path="/signup"  */}
-            <Route path="/signup" element={<SignUpPage />} />
+            <Route path="/signup" element={isLoggedIn() ?<Navigate to='/customer-management' />:<SignUpPage />} />
           
              {/* <Route path="/contact" element={<Contact />}/> */}
              {/* <Route path="/" element={<Home />} />  */}
