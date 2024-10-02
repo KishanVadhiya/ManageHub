@@ -6,7 +6,7 @@ import About from "./Pages/about"
 import Sidebar from "./Pages/Sidebar"
 import Invoice from "./Pages/Invoice"
 import CustomerManagement from './Pages/customerManage';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import SignIn from './components/auth/Signin';
 // import CreateBusinessAccount from "./Pages/createBusinessAccount";
 // import AllAccounts from "./Pages/AllAccount";
@@ -29,12 +29,12 @@ const App = () => {
           {/* <Route path="/" element={<Account />} /> */}
           {/* <Route path="/Account" element={<Account />} /> */}
     
-            <Route path="/" element={isLoggedIn() ?<CustomerManagement />: <SignIn/>} />
-            <Route path="/customer-management" element={isLoggedIn() ?<CustomerManagement />:<SignIn/>}  />
-            <Route path="/customer-details" element={isLoggedIn() ?<CustomerDetails />:<SignIn/>} />
-            <Route path="/inventory" element={isLoggedIn() ?<Inventory />:<SignIn/>} />
-            <Route path="/about" element={isLoggedIn() ?<About />:<SignIn/>} />
-            <Route path="/Invoice" element={isLoggedIn() ?<Invoice />:<SignIn/>} />
+            <Route path="/" element={isLoggedIn() ?<CustomerManagement />: <Navigate to='/signin' />} />
+            <Route path="/customer-management" element={isLoggedIn() ?<CustomerManagement />:<Navigate to='/signin' />}  />
+            <Route path="/customer-details" element={isLoggedIn() ?<CustomerDetails />:<Navigate to='/signin' />} />
+            <Route path="/inventory" element={isLoggedIn() ?<Inventory />:<Navigate to='/signin' />} />
+            <Route path="/about" element={isLoggedIn() ?<About />:<Navigate to='/signin' />} />
+            <Route path="/Invoice" element={isLoggedIn() ?<Invoice />:<Navigate to='/signin' />} />
             <Route path="/signin" element={<SignIn />} />
              {/* <Route path="/contact" element={<Contact />}/> */}
              {/* <Route path="/" element={<Home />} />  */}
