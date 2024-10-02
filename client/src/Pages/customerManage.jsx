@@ -83,13 +83,11 @@ const CustomerManagement = () => {
     }
   };
 
-  const openCustomerDetails = (customer) => {
+  // Pass only the customer ID to the navigate function
+  const openCustomerDetails = (customerId) => {
     navigate('/customer-details', {
       state: {
-        name: customer.name,
-        email: customer.email,
-        phone: customer.phone,
-        balance: customer.balance,
+        userinfoId: customerId,
       },
     });
   };
@@ -190,7 +188,7 @@ const CustomerManagement = () => {
           {customers.map((customer, index) => (
             <tr key={index}>
               <td
-                onDoubleClick={() => openCustomerDetails(customer)}
+                onDoubleClick={() => openCustomerDetails(customer._id)} // Pass only the customer ID
                 style={{ cursor: 'pointer' }}
               >
                 {customer.name}

@@ -1,9 +1,12 @@
 import { Link } from 'react-router-dom'; // Import Link
-import { useState } from 'react'; // Import useState for managing active state
+import { useState, useEffect } from 'react'; // Import useState and useEffect
+import axios from 'axios'; // Import axios for making API calls
 import styles from './Sidebar.module.css'; // Import CSS module
 
 const Sidebar = () => {
   const [activeItem, setActiveItem] = useState("/customer-management"); // Initialize active item state
+  const [userName, setUserName] = useState("User"); // Default name
+  const [userEmail, setUserEmail] = useState("user@example.com"); // Default email
 
   const navItems = [
     { href: "/customer-management", icon: "fas fa-th-large", label: "Customer Management" },
@@ -12,6 +15,26 @@ const Sidebar = () => {
     { href: "/contact", icon: "fas fa-cog", label: "Contact Us" },
     { href: "/invoice", icon: "fas fa-file-invoice", label: "Invoice" },
   ];
+
+  // Fetch user profile on component mount
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const response = await axios.get('http://localhost:3000/api/auth/profile', {
+          headers: {
+            'Authorization': localStorage.getItem('token'), // Add token from localStorage
+          },
+        });
+        // Set userName and userEmail from the response
+        setUserName(response.data.name);
+        setUserEmail(response.data.email);
+      } catch (error) {
+        console.error('Error fetching user profile:', error);
+      }
+    };
+
+    fetchUserProfile();
+  }, []); // Empty dependency array to run once on component mount
 
   return (
     <div className={styles.sidebar}>
@@ -36,9 +59,9 @@ const Sidebar = () => {
           <i className="fas fa-user-circle"></i> {/* Replace with your profile icon */}
           <div className={styles.profileInfo}>
             <Link to="/profile" className={styles.userName} onClick={() => setActiveItem("/profile")}>
-              Poojan
-            </Link> {/* Make username a clickable link to profile page */}
-            <span className={styles.userEmail}>emily@example.com</span>
+              {userName} {/* Display fetched name */}
+            </Link>
+            <span className={styles.userEmail}>{userEmail}</span> {/* Display fetched email */}
           </div>
         </div>
       </div>

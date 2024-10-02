@@ -38,6 +38,24 @@ const getUserInfo = async (req, res) => {
     }
 };
 
+// Get user information by ID
+const getUserInfoById = async (req, res) => {
+    const { id } = req.params; // Get ID from request params
+    const userId = req.user.id; // Get the authenticated user's ID
+
+    try {
+        const userInfo = await UserInfo.findOne({ _id: id, createdBy: userId }); // Find user info by ID and createdBy
+
+        if (!userInfo) {
+            return res.status(404).json({ message: 'User information not found' });
+        }
+        res.status(200).json(userInfo); // Return the found user info
+    } catch (error) {
+        console.error('Error retrieving user info by ID:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+};
+
 // Edit user information
 const updateUserInfo = async (req, res) => {
     const { id } = req.params; // Get ID from request params
@@ -86,6 +104,7 @@ const deleteUserInfo = async (req, res) => {
 module.exports = {
     addUserInfo,
     getUserInfo,
+    getUserInfoById, // Export the new function
     updateUserInfo,
     deleteUserInfo,
 };
