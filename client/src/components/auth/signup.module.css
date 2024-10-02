@@ -81,9 +81,6 @@ button {
     font-size: 1rem;
 }
 
-button:hover {
-    background-color: #5c2bd6;
-}
 
 .forgotPassword {
     display: block;

@@ -9,7 +9,7 @@ const CustomerDetails = () => {
   const [transactions, setTransactions] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
-    transactionId: '',
+    // transactionId: '',
     transactionDate: '',
     paymentType: '',
     transactionStatus: '',
@@ -53,7 +53,7 @@ const CustomerDetails = () => {
   // Handle submission of a new transaction
   const handleSubmitTransaction = () => {
     if (
-      formData.transactionId &&
+      // formData.transactionId &&
       formData.transactionDate &&
       formData.paymentType &&
       formData.transactionStatus &&
@@ -64,7 +64,7 @@ const CustomerDetails = () => {
       setTransactions([
         ...transactions,
         {
-          id: formData.transactionId,
+          // id: formData.transactionId,
           date: formData.transactionDate,
           paymentType: formData.paymentType,
           status: formData.transactionStatus,
@@ -75,7 +75,7 @@ const CustomerDetails = () => {
 
       // Clear form and product fields
       setFormData({
-        transactionId: '',
+        // transactionId: '',
         transactionDate: '',
         paymentType: '',
         transactionStatus: '',
@@ -91,7 +91,7 @@ const CustomerDetails = () => {
   const updatedBalance = (balance || 0) - totalTransactions;
 
   return (
-    <div className={styles.container}>
+    <div className={styles.containerDetails}>
       <h1>Customer Details</h1>
       <div className={styles.customerInfo}>
         <h2>Name: {name}</h2>
@@ -101,9 +101,9 @@ const CustomerDetails = () => {
       </div>
 
       <h3>Transaction History</h3>
-      <button onClick={() => setShowForm(true)}>Add New Transaction</button>
+      <button onClick={() => setShowForm(true)} style={{backgroundColor:"#134074"}}>Add New Transaction</button>
 
-      <table>
+      <table className={styles.tableDetails}>
         <thead>
           <tr>
             <th>Serial Number</th>
@@ -116,6 +116,7 @@ const CustomerDetails = () => {
         <tbody>
           {transactions.map((transaction, index) => (
             <tr key={index}>
+              {/* <td>{transaction.id}</td> */}
               <td></td>
               <td>{transaction.date}</td>
               <td>₹{transaction.totalAmount.toFixed(2)}</td>
@@ -138,6 +139,14 @@ const CustomerDetails = () => {
       {showForm && (
         <div className={styles.transactionForm}>
           <h3>Add Transaction</h3>
+          {/* <input
+            type="text"
+            id="transactionId"
+            placeholder="Transaction ID"
+            value={formData.transactionId}
+            onChange={handleInputChange}
+            required
+          /> */}
           <input
             type="date"
             id="transactionDate"
@@ -203,10 +212,12 @@ const CustomerDetails = () => {
               />
             </div>
           ))}
+          <div className={styles.addTransactionBtn}>
           <button onClick={handleAddProduct}>Add Another Product</button>
 
           <button onClick={handleSubmitTransaction}>Add Transaction</button>
           <button onClick={() => setShowForm(false)}>Close</button>
+          </div>
         </div>
       )}
     </div>

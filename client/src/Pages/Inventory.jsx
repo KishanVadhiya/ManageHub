@@ -199,7 +199,7 @@ const App = () => {
       )}
 
       <table id="inventory-table" className={styles.inventoryTable}>
-        <thead>
+        <thead className={styles.thead}>
           <tr>
             <th>Item number</th>
             <th>Item name</th>
@@ -210,7 +210,7 @@ const App = () => {
             <th>Actions</th>
           </tr>
         </thead>
-        <tbody id="table-body">
+        <tbody id="table-body" className={styles.tbody}>
           {displayItems.map((item) => (
             <tr key={item.number}>
               <td>{item.number}</td>

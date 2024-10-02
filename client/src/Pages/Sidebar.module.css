@@ -109,9 +109,12 @@
 /* New styles for user profile section */
 .profile {
   display: flex;
-  align-items: center; /* Center profile icon and text vertically */
+  align-items: center; 
+  gap:10px;/* Center profile icon and text vertically */
 }
-
+.profile i{
+  font-size: 30px;
+}
 .profileInfo {
   display: flex;
   flex-direction: column; /* Stack name and email */

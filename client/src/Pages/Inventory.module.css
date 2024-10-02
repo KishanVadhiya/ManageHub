@@ -8,11 +8,12 @@ body {
 
 .container {
     width: 100%;
-    width: 1200px;
+    width: 1400px;
     margin: 0 auto;
     padding: 20px;
-    margin-left: 10%;
+    margin-left: 150px;
     border-radius: 10px;
+    margin-top: -500px;
    
 }
 
@@ -26,12 +27,14 @@ header {
 
 header input.searchBar {
     width: 60%;
-    padding: 8px;
+    padding: px;
     font-size: 15px;
     border: 2px solid #4e5256;
     border-radius: 5px;
+    margin:0;
     margin-right: 10px;
     background-color: #f2f8ff;
+
 }
 
 .searchBtn {
@@ -51,7 +54,7 @@ header input.searchBar {
 /* Filter dropdown styles */
 .filterDropdown {
     width:27%;
-    padding: 10px;
+    padding: 8px;
     font-size: 16px;
     border: 2px solid #4e5256;
     border-radius: 5px;
@@ -91,32 +94,32 @@ header input.searchBar {
 }
 
 /* Table styles */
-table {
+.inventoryTable {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
 }
 
-table th, table td {
+.inventoryTable th, .inventoryTable td {
     border: 1px solid #ddd;
     padding: 12px;
     text-align: left;
 }
 
-table th {
+.inventoryTable th {
     background-color: #007bff;
     
 }
-thead tr th{
+.thead tr th{
     background-color: #134074;
     color:aliceblue;
     border: none;
 }
 
-tbody tr td{
+.tbody tr td{
     border: none;
 }
-tbody tr:nth-child(odd){
+.tbody tr:nth-child(odd){
     background-color: #e0f7fa;
 }
 
