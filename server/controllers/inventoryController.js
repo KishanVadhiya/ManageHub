@@ -2,7 +2,6 @@ const Inventory = require('../models/Inventory'); // Import the Inventory model
 
 // Add a new product
 const addProduct = async (req, res) => {
-    console.log("Inside addProduct");
     const { name, description, price, stockQuantity } = req.body; // Destructure request body
     const userId = req.user.id; // Get the authenticated user's ID
   
@@ -11,8 +10,6 @@ const addProduct = async (req, res) => {
       return res.status(400).json({ message: 'Name, price, and stock quantity are required.' });
     }
 
-    console.log(userId);
-  
     try {
       const newProduct = new Inventory({ 
         name, 
@@ -22,21 +19,16 @@ const addProduct = async (req, res) => {
         createdBy: userId // Set the createdBy field
       });
   
-      console.log("New Product Object: ", newProduct); // Log the new product object
-  
       await newProduct.save(); // Save product to the database
-      console.log("Product added successfully");
       res.status(201).json({ message: 'Product added successfully', product: newProduct });
     } catch (error) {
-      console.error("Error while adding product:", error); // Log the error details
       res.status(500).json({ message: 'Server error', error: error.message });
     }
-  };
-  
+};
 
-// Retrieve all products created by the authenticated user with optional filters
+// Retrieve all products created by the authenticated user with sorting functionality
 const getAllProducts = async (req, res) => {
-  const { name, minPrice, maxPrice, minStock, maxStock } = req.query; // Get filters from query parameters
+  const { name, minPrice, maxPrice, minStock, maxStock, sortBy, sortOrder } = req.query; // Get filters and sorting from query parameters
   const userId = req.user.id; // Get the authenticated user's ID
 
   // Create a filter object based on the query parameters
@@ -58,9 +50,18 @@ const getAllProducts = async (req, res) => {
     filters.stockQuantity = { ...filters.stockQuantity, $lte: Number(maxStock) }; // Filter for maximum stock
   }
 
+  // Determine sorting logic
+  const sortOptions = {};
+  if (sortBy) {
+    const sortFields = ['itemsSold', 'price', 'stockQuantity']; // Allowed fields for sorting
+    if (sortFields.includes(sortBy)) {
+      sortOptions[sortBy] = sortOrder === 'desc' ? -1 : 1; // Ascending or descending
+    }
+  }
+
   try {
-    const products = await Inventory.find(filters); // Find products based on filters
-    res.status(200).json(products); // Return filtered products
+    const products = await Inventory.find(filters).sort(sortOptions); // Find products based on filters and sorting
+    res.status(200).json(products); // Return filtered and sorted products
   } catch (error) {
     res.status(500).json({ message: 'Server error' });
   }
@@ -84,12 +85,12 @@ const getProductById = async (req, res) => {
 // Update a product
 const updateProduct = async (req, res) => {
   const { id } = req.params; // Get ID from request params
-  const { name, description, price, stockQuantity } = req.body; // Destructure request body
+  const { name, description, price, stockQuantity, itemsSold } = req.body; // Destructure request body
 
   try {
     const updatedProduct = await Inventory.findOneAndUpdate(
       { _id: id, createdBy: req.user.id }, // Find product by ID and createdBy
-      { name, description, price, stockQuantity },
+      { name, description, price, stockQuantity, itemsSold }, // Update all relevant fields
       { new: true } // Return the updated document
     );
     if (!updatedProduct) {
