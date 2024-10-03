@@ -1,9 +1,8 @@
-// import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import axios from 'axios';
 import styles from './login.module.css';
 
-const LoginPage = () => {
+const LoginPage = ({ handleLogin }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
@@ -16,10 +15,16 @@ const LoginPage = () => {
             const response = await axios.post('http://localhost:3000/api/auth/login', { email, password });
             const { token } = response.data;
             localStorage.setItem('token', token);
-            // Navigate to the home page or dashboard after login
+            // Invoke the passed handleLogin function on successful login
+            handleLogin();
         } catch (error) {
             setError('Invalid email or password. Please try again.');
         }
+    };
+
+    const handleSignUpClick = () => {
+        // Invoke navigation to Sign Up via the parent component or an external function
+        handleLogin('/signup');
     };
 
     return (
@@ -47,7 +52,7 @@ const LoginPage = () => {
             </form>
             <div className={styles.navigation}>
                 <p>Don&apos;t have an account? 
-                    {/* <Link to="/signup"> Register</Link> */}
+                    <a href="#" onClick={handleSignUpClick}> Register</a>
                 </p>
             </div>
         </div>

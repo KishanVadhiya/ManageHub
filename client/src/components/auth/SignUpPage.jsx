@@ -1,4 +1,4 @@
-// import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import axios from 'axios';
 import styles from './signup.module.css';
@@ -10,6 +10,8 @@ const SignUpPage = () => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
 
+    const navigate = useNavigate(); // Initialize navigate for programmatic navigation
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError(null);
@@ -20,7 +22,8 @@ const SignUpPage = () => {
                 email,
                 password,
             });
-            // Optionally redirect to the login page after signup
+            // Redirect to the login page after successful signup
+            navigate('/login');
         } catch (error) {
             setError('Failed to create account. Please try again.');
         }
@@ -67,7 +70,7 @@ const SignUpPage = () => {
             </form>
             <div className={styles.navigation}>
                 <p>Already have an account? 
-                    {/* <Link to="/login"> Sign In</Link> */}
+                    <Link to="/signin"> Sign In</Link>
                 </p>
             </div>
         </div>
