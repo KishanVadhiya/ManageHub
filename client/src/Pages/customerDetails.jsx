@@ -1,23 +1,72 @@
 import { useLocation } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './customerDetails.module.css'; // Import the CSS module
 
 const CustomerDetails = () => {
   const location = useLocation();
-  const { name, email, phone, balance } = location.state || {}; // Destructure data from location.state
+  const userInfoId = location.state.userinfoId; // Replace with dynamic id if needed
 
+  // State variables initialized with empty or null values
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [balance, setBalance] = useState(0);
   const [transactions, setTransactions] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
-    // transactionId: '',
     transactionDate: '',
     paymentType: '',
     transactionStatus: '',
   });
-
   const [products, setProducts] = useState([
-    { productName: '', price: '', quantity: '', discount: '' }
+    { productId: '', productName: '', price: '', quantity: '', discount: '' }
   ]);
+  const [productArray, setProductArray] = useState([]);
+
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/api/userinfo/${userInfoId}`, {
+          headers: { 'Authorization': `${localStorage.getItem('token')}` }
+        });
+        const data = await response.json();
+        setName(data.name);
+        setEmail(data.email);
+        setPhone(data.phone);
+        setBalance(data.balance);
+      } catch (error) {
+        console.error('Error fetching user details:', error);
+      }
+    };
+
+    const getProductDetails = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/api/inventory`, {
+          headers: { 'Authorization': `${localStorage.getItem('token')}` }
+        });
+        const data = await response.json();
+        setProductArray(data);
+      } catch (error) {
+        console.error('Error fetching product details:', error);
+      }
+    };
+
+    const fetchTransactions = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/api/invoices?userInfoId=${userInfoId}`, {
+          headers: { 'Authorization': `${localStorage.getItem('token')}` }
+        });
+        const data = await response.json();
+        setTransactions(data);
+      } catch (error) {
+        console.error('Error fetching transactions:', error);
+      }
+    };
+
+    getProductDetails();
+    fetchUserDetails();
+    fetchTransactions(); // Fetch transactions when component mounts
+  }, []); // Added dependency array to prevent infinite loop
 
   // Handle transaction form changes
   const handleInputChange = (e) => {
@@ -27,7 +76,21 @@ const CustomerDetails = () => {
     });
   };
 
-  // Handle product input change
+  // Handle product selection
+  const handleProductSelect = (index, e) => {
+    const selectedProduct = productArray.find(product => product._id === e.target.value);
+
+    const updatedProducts = [...products];
+    updatedProducts[index] = {
+      ...updatedProducts[index],
+      productId: selectedProduct._id,
+      productName: selectedProduct.name,
+      price: selectedProduct.price,
+    };
+    setProducts(updatedProducts);
+  };
+
+  // Handle quantity and discount change
   const handleProductChange = (index, e) => {
     const updatedProducts = [...products];
     updatedProducts[index][e.target.name] = e.target.value;
@@ -36,7 +99,7 @@ const CustomerDetails = () => {
 
   // Add a new product row
   const handleAddProduct = () => {
-    setProducts([...products, { productName: '', price: '', quantity: '', discount: '' }]);
+    setProducts([...products, { productId: '', productName: '', price: '', quantity: '', discount: '' }]);
   };
 
   // Calculate the total amount for a transaction
@@ -51,37 +114,71 @@ const CustomerDetails = () => {
   };
 
   // Handle submission of a new transaction
-  const handleSubmitTransaction = () => {
+  const handleSubmitTransaction = async () => {
     if (
-      // formData.transactionId &&
       formData.transactionDate &&
       formData.paymentType &&
       formData.transactionStatus &&
-      products.every(product => product.productName && product.price && product.quantity)
+      products.every(product => product.productId && product.price && product.quantity)
     ) {
       const totalAmount = calculateTotalAmount();
 
-      setTransactions([
-        ...transactions,
-        {
-          // id: formData.transactionId,
-          date: formData.transactionDate,
-          paymentType: formData.paymentType,
-          status: formData.transactionStatus,
-          totalAmount,
-          products,
-        },
-      ]);
+      // Sample payload structure
+      const payload = {
+        userInfoId,
+        products: products.map(product => ({
+          productId: product.productId,
+          name: product.productName,
+          price: parseFloat(product.price),
+          discount: parseFloat(product.discount),
+          quantity: parseInt(product.quantity),
+        })),
+        totalAmount, // Automatically calculated
+        paymentType: formData.paymentType.toLowerCase(), // "cash" or "check"
+        paymentStatus: formData.transactionStatus.toLowerCase(), // "completed", "pending", "failed"
+      };
 
-      // Clear form and product fields
-      setFormData({
-        // transactionId: '',
-        transactionDate: '',
-        paymentType: '',
-        transactionStatus: '',
-      });
-      setProducts([{ productName: '', price: '', quantity: '', discount: '' }]);
-      setShowForm(false);
+      try {
+        const response = await fetch('http://localhost:3000/api/invoices', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `${localStorage.getItem('token')}`, // Token from localStorage
+          },
+          body: JSON.stringify(payload), // Payload to send
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+          console.log('Transaction successful:', result);
+
+          // Add the new transaction to the state
+          setTransactions([
+            ...transactions,
+            {
+              date: formData.transactionDate,
+              paymentType: formData.paymentType,
+              status: formData.transactionStatus,
+              totalAmount,
+              products,
+            },
+          ]);
+
+          // Clear form and product fields
+          setFormData({
+            transactionDate: '',
+            paymentType: '',
+            transactionStatus: '',
+          });
+          setProducts([{ productId: '', productName: '', price: '', quantity: '', discount: '' }]);
+          setShowForm(false);
+        } else {
+          console.error('Failed to create transaction:', await response.text());
+          alert('Transaction creation failed.');
+        }
+      } catch (error) {
+        console.error('Error during transaction submission:', error);
+      }
     } else {
       alert("Please fill out all transaction and product fields");
     }
@@ -101,7 +198,7 @@ const CustomerDetails = () => {
       </div>
 
       <h3>Transaction History</h3>
-      <button onClick={() => setShowForm(true)} style={{backgroundColor:"#134074"}}>Add New Transaction</button>
+      <button onClick={() => setShowForm(true)} style={{ backgroundColor: "#134074" }}>Add New Transaction</button>
 
       <table className={styles.tableDetails}>
         <thead>
@@ -116,21 +213,11 @@ const CustomerDetails = () => {
         <tbody>
           {transactions.map((transaction, index) => (
             <tr key={index}>
-              {/* <td>{transaction.id}</td> */}
-              <td></td>
-              <td>{transaction.date}</td>
+              <td>{index + 1}</td> {/* Added Serial Number */}
+              <td>{new Date(transaction.createdAt).toLocaleDateString()}</td> {/* Use createdAt for date */}
               <td>₹{transaction.totalAmount.toFixed(2)}</td>
               <td>{transaction.paymentType}</td>
-              <td>{transaction.status}</td>
-              {/* <td>
-                <ul>
-                  {transaction.products.map((product, i) => (
-                    <li key={i}>
-                      {product.productName} - Price: ₹{product.price}, Quantity: {product.quantity}, Discount: {product.discount}%
-                    </li>
-                  ))}
-                </ul>
-              </td> */}
+              <td>{transaction.paymentStatus}</td>
             </tr>
           ))}
         </tbody>
@@ -139,14 +226,6 @@ const CustomerDetails = () => {
       {showForm && (
         <div className={styles.transactionForm}>
           <h3>Add Transaction</h3>
-          {/* <input
-            type="text"
-            id="transactionId"
-            placeholder="Transaction ID"
-            value={formData.transactionId}
-            onChange={handleInputChange}
-            required
-          /> */}
           <input
             type="date"
             id="transactionDate"
@@ -178,30 +257,21 @@ const CustomerDetails = () => {
 
           <h4>Products</h4>
           {products.map((product, index) => (
-            <div key={index} className={styles.productRow}>
-              <input
-                type="text"
-                name="productName"
-                placeholder="Product Name"
-                value={product.productName}
-                onChange={(e) => handleProductChange(index, e)}
-                required
-              />
-              <input
-                type="number"
-                name="price"
-                placeholder="Price"
-                value={product.price}
-                onChange={(e) => handleProductChange(index, e)}
-                required
-              />
+            <div key={index}>
+              <select
+                onChange={(e) => handleProductSelect(index, e)}
+              >
+                <option value="">Select Product</option>
+                {productArray.map(item => (
+                  <option key={item._id} value={item._id}>{item.name}</option>
+                ))}
+              </select>
               <input
                 type="number"
                 name="quantity"
                 placeholder="Quantity"
                 value={product.quantity}
                 onChange={(e) => handleProductChange(index, e)}
-                required
               />
               <input
                 type="number"
@@ -212,12 +282,8 @@ const CustomerDetails = () => {
               />
             </div>
           ))}
-          <div className={styles.addTransactionBtn}>
-          <button onClick={handleAddProduct}>Add Another Product</button>
-
-          <button onClick={handleSubmitTransaction}>Add Transaction</button>
-          <button onClick={() => setShowForm(false)}>Close</button>
-          </div>
+          <button onClick={handleAddProduct}>Add Product</button>
+          <button onClick={handleSubmitTransaction}>Submit Transaction</button>
         </div>
       )}
     </div>
