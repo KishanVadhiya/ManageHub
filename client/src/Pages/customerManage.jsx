@@ -37,6 +37,7 @@ const CustomerManagement = () => {
   };
 
   const handleInputChange = (e) => {
+    console.log(formData)
     setFormData({
       ...formData,
       [e.target.id]: e.target.value,
@@ -57,6 +58,7 @@ const CustomerManagement = () => {
             body: JSON.stringify(formData),
           });
         } else {
+          console.log(formData)
           // Add new customer
           await fetch('http://localhost:3000/api/userinfo', {
             method: 'POST',

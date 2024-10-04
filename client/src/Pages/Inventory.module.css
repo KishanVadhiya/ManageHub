@@ -7,15 +7,17 @@ body {
 }
 
 .container {
-    width: 100%;
-    width: 1400px;
-    margin: 0 auto;
+    max-width: 120%;
+    margin: 0 0 0 150px; /* Set top margin to 0, keep left margin */
     padding: 20px;
-    margin-left: 150px;
     border-radius: 10px;
-    margin-top: -500px;
-   
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    min-width: 90%;
+
 }
+
 
 /* Header styles */
 header {
@@ -23,6 +25,7 @@ header {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+    top:0;
 }
 
 header input.searchBar {
@@ -71,7 +74,7 @@ header input.searchBar {
     border-radius: 10px;
     font-size: 16px;
     cursor: pointer;
-    width:13%;
+    width:20%;
     margin:4.5px;
     height: 42px;
     margin-top: 10px;
@@ -105,9 +108,9 @@ header input.searchBar {
     padding: 12px;
     text-align: left;
 }
-
 .inventoryTable th {
-    background-color: #007bff;
+    background-color: #134074;
+    color: white;
     
 }
 .thead tr th{
@@ -135,6 +138,7 @@ header input.searchBar {
 /* Form styles */
 .addItemForm{
     display: flex;
+    /* width: 100%; */
  
 }
 .addItemForm input {
@@ -143,8 +147,8 @@ header input.searchBar {
     border: 2px solid #979797;
     border-radius: 5px;
     background-color: #eef2f6;
-    font-size: 14px;
-    width:250px;
+    font-size: inherit;
+    max-width:20%;
 }
 
 .addItemForm button {
@@ -155,7 +159,7 @@ header input.searchBar {
     border-radius: 10px;
     font-size: 16px;
     cursor: pointer;
-    width:50%;
+    width:100%;
     margin:4.5px;
 }
 
@@ -163,4 +167,12 @@ header input.searchBar {
     background-color: white;
     color:#134074;
     border:1px solid #134074;
+}
+
+
+.container{
+    margin-left: 18%;
+    /* position: absolute; */
+    top:0;
+    height: 100vh;
 }

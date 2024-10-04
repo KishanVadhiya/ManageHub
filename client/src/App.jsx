@@ -9,20 +9,21 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import LoginPage from './components/auth/LoginPage';
 import Profile from './Pages/Profile';
 import SignUpPage from "./components/auth/SignUpPage";
+import Contact from "./Pages/Contact";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token'));
 
   // Handles successful login
   const handleLogin = () => {
-    setIsLoggedIn(true);
+    setIsLoggedIn(!isLoggedIn);
   };
 
   return (
     <Router>
       <div>
         {/* Display Sidebar only when logged in */}
-        {isLoggedIn && <Sidebar />}
+        {isLoggedIn && <Sidebar handleLogOutState={handleLogin}/>}
         <Routes>
           <Route path="/" element={isLoggedIn ? <CustomerManagement /> : <Navigate to='/signin' />} />
           <Route path="/customer-management" element={isLoggedIn ? <CustomerManagement /> : <Navigate to='/signin' />} />
@@ -31,6 +32,7 @@ const App = () => {
           <Route path="/about" element={isLoggedIn ? <About /> : <Navigate to='/signin' />} />
           <Route path="/invoice" element={isLoggedIn ? <Invoice /> : <Navigate to='/signin' />} />
           <Route path="/profile" element={isLoggedIn ? <Profile /> : <Navigate to='/signin' />} />
+          <Route path="/contact" element={isLoggedIn ? <Contact /> : <Navigate to='/signin' />} />
           <Route path="/signin" element={isLoggedIn ? <Navigate to='/customer-management' /> : <LoginPage handleLogin={handleLogin} />} />
           <Route path="/signup" element={isLoggedIn ? <Navigate to='/customer-management' /> : <SignUpPage />} />
         </Routes>

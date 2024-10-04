@@ -22,8 +22,17 @@ body {
     max-width: 900px;
     width:900px;
     height:500px;
-}
 
+
+}
+.navigation{
+    text-align: center;
+}
+.formInput{
+    padding: 10px;
+    margin: 10px;
+    width:450px;
+}
 .formSection {
     width: 70%;
     padding: 2rem;
@@ -31,8 +40,16 @@ body {
     flex-direction: column;
     justify-content: center;
 }
-
-
+.img{
+    background-color: #6d33ef;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.loginContainer{
+    padding: 15px;
+    margin-top: 25px;
+}
 h2 {
     font-size: 1.5rem;
     font-weight: 600;

@@ -23,7 +23,7 @@ const SignUpPage = () => {
                 password,
             });
             // Redirect to the login page after successful signup
-            navigate('/login');
+            navigate('/signin');
         } catch (error) {
             setError('Failed to create account. Please try again.');
         }
@@ -31,9 +31,10 @@ const SignUpPage = () => {
 
     return (
         <div className={styles.container}>
+            <div className={styles.signupContainer}>
             <h2>Sign Up</h2>
             {error && <p className={styles.error}>{error}</p>}
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className={styles.formInput}>
                 <label>First Name</label>
                 <input 
                     type="text" 
@@ -68,11 +69,15 @@ const SignUpPage = () => {
                 />
                 <button type="submit">Sign Up</button>
             </form>
-            <div className={styles.navigation}>
+            <div className={styles.C}>
                 <p>Already have an account? 
                     <Link to="/signin"> Sign In</Link>
                 </p>
             </div>
+        </div>
+        <div className={styles.img}>
+            <img src="logo-removebg-preview.png" alt="Logo" />
+        </div>
         </div>
     );
 };

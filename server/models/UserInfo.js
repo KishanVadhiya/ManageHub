@@ -9,7 +9,7 @@ const UserInfoSchema = new mongoose.Schema({
     email: {
         type: String,
         required: true,
-        unique: true, // Unique email for each user
+        // unique: true, // Unique email for each user
     },
     phone: {
         type: String,

@@ -5,7 +5,7 @@
     color: #4A148C;
     padding: 40px 20px;
     background-color: #f8f8f8;
-    margin-top: 10vh;
+   
 }
   
 .ContactSection h2 {
@@ -19,7 +19,7 @@
     display: flex;
     align-items: stretch; /* Ensure children elements stretch to the same height */
     gap: 30px;
-    max-width: 1200px;
+    width: 1200px;
     margin: auto;
 }
   
@@ -111,7 +111,13 @@
     border-color: #6A0DAD; /* Purple border on focus */
     outline: none;
 }
-  
+.form{
+    padding:10px;
+}
+.contact_form
+{
+    padding:20px;
+}
 .contact_form button {
     width: 100%;
     padding: 10px;

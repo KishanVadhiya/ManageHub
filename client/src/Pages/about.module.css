@@ -2,7 +2,7 @@
 
 .aboutPage {
     font-family: 'Poppins', sans-serif;
-    color: #4A148C; /* Main text color */
+    color: #000000; /* Main text color */
     padding: 20px;
     margin-top: 80vh;
    
@@ -18,7 +18,7 @@
     font-family: 'Bona Nova SC', serif;
     font-size: 2.5rem;
     margin: 0;
-    color: #6A0DAD; /* Darker purple for prominence */
+    color: #000000; /* Darker purple for prominence */
   }
   
   .headerSubheading {
@@ -54,14 +54,14 @@
   .introText h2 {
     font-size: 2rem;
     margin-bottom: 10px;
-    color: #4A148C; /* Main section heading color */
+    color: #000000; /* Main section heading color */
   }
   
   .introText p {
     text-align: justify;
     font-size: 1.1rem;
     line-height: 1.6;
-    color: #5E35B1; /* Lighter shade of purple for body text */
+    color: #000000; /* Lighter shade of purple for body text */
     margin-bottom: 20px;
   }
   
@@ -72,14 +72,14 @@
   
   .missionSection h2 {
     font-size: 2rem;
-    color: #6A0DAD; /* Darker purple for heading */
+    color: #000000; /* Darker purple for heading */
     margin-bottom: 10px;
   }
   
   .missionSection p {
     font-size: 1.1rem;
     line-height: 1.6;
-    color: #5E35B1; /* Lighter shade of purple */
+    color: #000000; /* Lighter shade of purple */
     max-width: 800px;
     margin: auto;
   }
@@ -90,7 +90,7 @@
   
   .servicesSection h2 {
     font-size: 2rem;
-    color: #6A0DAD; /* Darker purple for heading */
+    color: #000000; /* Darker purple for heading */
     text-align: center;
     margin-bottom: 20px;
   }
@@ -113,14 +113,14 @@
   
   .serviceCard h3 {
     font-size: 1.5rem;
-    color: #6A0DAD; /* Darker purple for service headings */
+    color: #000000; /* Darker purple for service headings */
     margin-bottom: 10px;
   }
   
   .serviceCard p {
     font-size: 1rem;
     line-height: 1.6;
-    color: #5E35B1; /* Lighter shade of purple for body text */
+    color: #000000; /* Lighter shade of purple for body text */
   }
   
   
@@ -132,7 +132,7 @@
 }
 
 .contributors h2 {
-  color: #4A148C; /* Purple text */
+  color: #000000; /* Purple text */
   text-align: center;
   margin-bottom: 30px;
 }
@@ -159,7 +159,7 @@
   margin-top: 20px;
   text-align: center;
   font-family: 'Poppins';
-  color: #4A148C;
+  color: #000000;
   font-weight: 500;
 }
 

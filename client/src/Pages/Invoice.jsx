@@ -214,9 +214,7 @@ const MyForm = () => {
                 ></i>{" "}
                 Items
               </h2>
-              <p>
-                <i className="bi bi-download"></i> Import
-              </p>
+            
             </div>
             <table>
               <thead className={styles.theadInvoice}>
@@ -272,7 +270,7 @@ const MyForm = () => {
                       />
                     </td>
                     <td className={styles.itemAmount}>
-                      ₹{item.amount.toFixed(2)}
+                      ${item.amount.toFixed(2)}
                     </td>
                     <td>
                       <i
@@ -301,7 +299,7 @@ const MyForm = () => {
               <div className={styles.itemTax}>
                 <label>Total before tax</label>
                 <span id="total-before-tax">
-                  ₹{totals.totalBeforeTax.toFixed(2)}
+                  ${totals.totalBeforeTax.toFixed(2)}
                 </span>
               </div>
             </div>
@@ -310,12 +308,12 @@ const MyForm = () => {
                 <label>
                   Tax <span>5%</span>
                 </label>
-                <span id="tax">₹{totals.tax.toFixed(2)}</span>
+                <span id="tax">${totals.tax.toFixed(2)}</span>
               </div>
               <div className={styles.totalTax}>
                 <label>Total after tax</label>
                 <span id="total-after-tax" className={styles.totalAfterTax1}>
-                  ₹{totals.totalAfterTax.toFixed(2)}
+                  ${totals.totalAfterTax.toFixed(2)}
                 </span>
               </div>
             </div>
@@ -429,7 +427,7 @@ const MyForm = () => {
                 <option value="" selected disabled>
                   Select currency
                 </option>
-                <option value=""> ₹</option>
+                <option value=""> $</option>
                 {/* Currency options */}
               </select>
             </div>

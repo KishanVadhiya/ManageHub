@@ -1,11 +1,15 @@
 import { useState } from 'react';
 import axios from 'axios';
 import styles from './login.module.css';
+import { useNavigate } from 'react-router-dom';
+// import { Navigate } from 'react-router-dom';
 
 const LoginPage = ({ handleLogin }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
+
+    const navigate=useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -24,14 +28,18 @@ const LoginPage = ({ handleLogin }) => {
 
     const handleSignUpClick = () => {
         // Invoke navigation to Sign Up via the parent component or an external function
-        handleLogin('/signup');
+        // handleLogin('/signup');
+        // Navigate('/signup')
+        navigate('/signup');
     };
 
     return (
         <div className={styles.container}>
+            <div className={styles.loginContainer}>
             <h2>Sign In</h2>
             {error && <p className={styles.error}>{error}</p>}
-            <form onSubmit={handleSubmit}>
+       
+            <form onSubmit={handleSubmit} className={styles.formInput}>
                 <label>Email</label>
                 <input 
                     type="email" 
@@ -55,7 +63,13 @@ const LoginPage = ({ handleLogin }) => {
                     <a href="#" onClick={handleSignUpClick}> Register</a>
                 </p>
             </div>
+
         </div>
+        <div className={styles.img}>
+            <img src="logo-removebg-preview.png" alt="Logo" />
+        </div>
+        </div>
+       
     );
 };
 

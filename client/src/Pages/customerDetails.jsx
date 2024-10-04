@@ -27,13 +27,13 @@ const CustomerDetails = () => {
     const fetchUserDetails = async () => {
       try {
         const response = await fetch(`http://localhost:3000/api/userinfo/${userInfoId}`, {
-          headers: { 'Authorization': `${localStorage.getItem('token')}` }
+          headers: { 'Authorization': `${localStorage.getItem('token')} `}
         });
         const data = await response.json();
         setName(data.name);
         setEmail(data.email);
         setPhone(data.phone);
-        setBalance(data.balance);
+        setBalance(data.outstandingBalance);
       } catch (error) {
         console.error('Error fetching user details:', error);
       }
@@ -41,8 +41,8 @@ const CustomerDetails = () => {
 
     const getProductDetails = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/inventory`, {
-          headers: { 'Authorization': `${localStorage.getItem('token')}` }
+        const response = await fetch("http://localhost:3000/api/inventory", {
+          headers: { 'Authorization':` ${localStorage.getItem('token')}` }
         });
         const data = await response.json();
         setProductArray(data);
@@ -194,7 +194,7 @@ const CustomerDetails = () => {
         <h2>Name: {name}</h2>
         <p><strong>Email:</strong> {email}</p>
         <p><strong>Phone:</strong> {phone}</p>
-        <p><strong>Outstanding Balance:</strong> ₹{updatedBalance.toFixed(2)}</p>
+        <p><strong>Outstanding Balance:</strong> ${updatedBalance.toFixed(2)}</p>
       </div>
 
       <h3>Transaction History</h3>
@@ -215,7 +215,7 @@ const CustomerDetails = () => {
             <tr key={index}>
               <td>{index + 1}</td> {/* Added Serial Number */}
               <td>{new Date(transaction.createdAt).toLocaleDateString()}</td> {/* Use createdAt for date */}
-              <td>₹{transaction.totalAmount.toFixed(2)}</td>
+              <td>${transaction.totalAmount.toFixed(2)}</td>
               <td>{transaction.paymentType}</td>
               <td>{transaction.paymentStatus}</td>
             </tr>

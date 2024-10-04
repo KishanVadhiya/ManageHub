@@ -87,10 +87,6 @@ button {
   margin-bottom: 15px;
 }
 
-.productRow select{
-  width: 100px;
-}
-
 .productRow input {
   flex: 1;
 }

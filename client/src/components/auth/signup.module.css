@@ -12,6 +12,13 @@ body {
     justify-content: center;
     align-items: center;
 }
+.img{
+    background-color: #6d33ef;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
 
 .container {
     display: flex;
@@ -24,6 +31,13 @@ body {
     justify-content: center;
     margin-left: -7%;
 }
+.signupContainer{
+    padding: 15px;
+    margin-top: 25px;
+    width:600px;
+
+ 
+}
 
 .formSection {
     width: 70%;
@@ -32,8 +46,13 @@ body {
     flex-direction: column;
     justify-content: center;
 }
+.img{
+    width:400px;
 
-
+}
+.C{
+    text-align: center;
+}
 h2 {
     font-size: 1.5rem;
     font-weight: 600;

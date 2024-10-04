@@ -2,7 +2,7 @@ const Inventory = require('../models/Inventory'); // Import the Inventory model
 
 // Add a new product
 const addProduct = async (req, res) => {
-    const { name, description, price, stockQuantity } = req.body; // Destructure request body
+    const { name, description, price, stockQuantity,itemsSold } = req.body; // Destructure request body
     const userId = req.user.id; // Get the authenticated user's ID
   
     // Validate input
@@ -15,7 +15,8 @@ const addProduct = async (req, res) => {
         name, 
         description, 
         price, 
-        stockQuantity, 
+        stockQuantity,
+        itemsSold, 
         createdBy: userId // Set the createdBy field
       });
   

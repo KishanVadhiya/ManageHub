@@ -2,7 +2,8 @@ const UserInfo = require('../models/UserInfo'); // Import the UserInfo model
 
 // Add new user information
 const addUserInfo = async (req, res) => {
-    const { name, email, phone, outstandingBalance } = req.body; // Destructure request body
+    const { name, email, phone, balance } = req.body; // Destructure request body
+    const outstandingBalance=balance;
     const userId = req.user.id; // Get the authenticated user's ID
 
     try {

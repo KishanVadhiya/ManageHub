@@ -53,6 +53,7 @@ const Inventory = () => {
 
     if (name && description && qty && price) {
       try {
+        console.log(parseInt(sold || 0))
         const method = editingItem ? 'PUT' : 'POST';
         const endpoint = editingItem ? `http://localhost:3000/api/inventory/${editingItem._id}` : 'http://localhost:3000/api/inventory';
         const response = await fetch(endpoint, {
@@ -66,7 +67,7 @@ const Inventory = () => {
             description,
             price: parseFloat(price),
             stockQuantity: parseInt(qty),
-            itemsSold: parseInt(sold || 0)
+            itemsSold: parseInt(sold)
           })
         });
 
@@ -191,7 +192,7 @@ const Inventory = () => {
           <input
             type="text"
             id="name"
-            placeholder="Item Name"
+            placeholder="Name"
             value={formData.name}
             onChange={handleInputChange}
             className={styles.formInput}
@@ -199,7 +200,7 @@ const Inventory = () => {
           <input
             type="text"
             id="description"
-            placeholder="Item Description"
+            placeholder="Description"
             value={formData.description}
             onChange={handleInputChange}
             className={styles.formInput}

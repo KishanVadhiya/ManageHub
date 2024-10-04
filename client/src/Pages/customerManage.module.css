@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   padding: 20px;
-  margin-top:-500px;
+  margin-top:0px;
   margin-left: 150px; /* Accounting for the sidebar width */
   /* width: calc(100% - 400px); */
 }
@@ -45,8 +45,8 @@
   border:1px solid #134074;
 }
 .customerTable {
-  width: 100%;
-  width:1400px;
+  /* width: 100%; */
+  width:116.5%;
   border-collapse: collapse;
   margin-top: 20px;
 }
@@ -79,7 +79,7 @@
   /* background-color: #134074; Matching table header color */
   /* padding: 20px; */
   border-radius: 10px;
-  width: 1400px /* Covering full window width except sidebar */
+  width: 100% /* Covering full window width except sidebar */
   /* margin-bottom: 20px; */
 }
 
@@ -116,4 +116,10 @@
   background-color: white;
   color: #134074;
   border: 1px solid #134074;
+}
+
+
+.container{
+  width: 70vw;
+  height: 100vh;
 }

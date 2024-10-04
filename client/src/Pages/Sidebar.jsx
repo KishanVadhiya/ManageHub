@@ -1,12 +1,13 @@
-import { Link } from 'react-router-dom'; // Import Link
+import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate for redirection
 import { useState, useEffect } from 'react'; // Import useState and useEffect
 import axios from 'axios'; // Import axios for making API calls
 import styles from './Sidebar.module.css'; // Import CSS module
 
-const Sidebar = () => {
+const Sidebar = ({handleLogOutState}) => {
   const [activeItem, setActiveItem] = useState("/customer-management"); // Initialize active item state
   const [userName, setUserName] = useState("User"); // Default name
   const [userEmail, setUserEmail] = useState("user@example.com"); // Default email
+  const navigate = useNavigate(); // Initialize useNavigate hook for navigation
 
   const navItems = [
     { href: "/customer-management", icon: "fas fa-th-large", label: "Customer Management" },
@@ -36,24 +37,37 @@ const Sidebar = () => {
     fetchUserProfile();
   }, []); // Empty dependency array to run once on component mount
 
+  // Handle log out
+  const handleLogout = () => {
+    // Remove token from localStorage
+    localStorage.removeItem('token');
+
+    handleLogOutState();
+    // setTimeout(()=>{},1000)
+    // Navigate to the login page
+    navigate('/');
+  };
+
   return (
     <div className={styles.sidebar}>
       <div className={styles.logoSection}>
-        <img src="vite.svg" alt="Logo" className={styles.logo} />
+        <img src="managelogo.jpg" alt="Logo" className={styles.logo} />
         <h2 className={styles.brandName}>ManageHub</h2>
       </div>
+
       <nav className={styles.navLinks}>
         {navItems.map((item) => (
           <Link 
             key={item.label} 
             to={item.href} 
-            className={`${styles.navItem} ${activeItem === item.href ? styles.active : ''}`} // Corrected backtick usage
+            className={`${styles.navItem} ${activeItem === item.href ? styles.active : ''}`} 
             onClick={() => setActiveItem(item.href)} // Set active item on click
           >
             <i className={item.icon}></i> {item.label}
           </Link>
         ))}
       </nav>
+
       <div className={styles.userSection}>
         <div className={styles.profile}>
           <i className="fas fa-user-circle"></i> {/* Replace with your profile icon */}
@@ -64,6 +78,13 @@ const Sidebar = () => {
             <span className={styles.userEmail}>{userEmail}</span> {/* Display fetched email */}
           </div>
         </div>
+      </div>
+
+      {/* Log Out button at the bottom */}
+      <div className={styles.logoutSection}>
+        <button onClick={handleLogout} className={styles.logoutButton}>
+          <i className="fas fa-sign-out-alt"></i> Log Out
+        </button>
       </div>
     </div>
   );
