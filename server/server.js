@@ -41,16 +41,17 @@ console.log("\n\n\nThis is outside deployment code >> \n");
 // --------------------- deployment ------------------------
 const __dirname1= path.resolve();
 
-console.log("\n\n\n\n");
-console.log(__dirname1);
-console.log("\n\n\n\n");
+
 if(process.env.NODE_ENV=="development"){
   console.log("Reached here");
   app.use(express.static(path.join(__dirname1,"/client/dist")));
-
+  console.log("\n\n\n\n");
+  console.log(__dirname1);
+  console.log("\n\n\n\n");
   app.get("*",(req,res)=>{
     res.sendFile(path.resolve(__dirname1,"client","dist","index.html"))
   })
+  console.log("Inside deployment code");
 
 }else{
   app.get('/',(req,res)=>{
