@@ -44,7 +44,7 @@ const __dirname1= path.resolve();
 console.log("\n\n\n\n");
 console.log(__dirname1);
 console.log("\n\n\n\n");
-if(process.env.NODE_ENV=="production"){
+if(process.env.NODE_ENV=="development"){
   console.log("Reached here");
   app.use(express.static(path.join(__dirname1,"/client/dist")));
 
