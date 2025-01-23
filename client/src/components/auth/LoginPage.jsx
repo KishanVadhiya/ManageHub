@@ -3,7 +3,9 @@ import axios from 'axios';
 import styles from './login.module.css';
 import { useNavigate } from 'react-router-dom';
 // import { Navigate } from 'react-router-dom';
-
+// import { config } from 'dotenv';
+// config();
+// console.log(process.env.API_URL);
 const LoginPage = ({ handleLogin }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -16,7 +18,7 @@ const LoginPage = ({ handleLogin }) => {
         setError(null);
 
         try {
-            const response = await axios.post('http://localhost:3000/api/auth/login', { email, password });
+            const response = await axios.post('https://managehub.onrender.com/api/auth/login', { email, password });
             const { token } = response.data;
             localStorage.setItem('token', token);
             // Invoke the passed handleLogin function on successful login

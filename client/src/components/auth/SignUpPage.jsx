@@ -17,7 +17,7 @@ const SignUpPage = () => {
         setError(null);
 
         try {
-            await axios.post('http://localhost:3000/api/auth/register', {
+            await axios.post('https://managehub.onrender.com/api/auth/register', {
                 name: `${firstname} ${lastname}`,
                 email,
                 password,
